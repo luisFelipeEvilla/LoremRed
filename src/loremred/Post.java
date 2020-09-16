@@ -11,8 +11,8 @@ import java.util.ArrayList;
  *
  * @author luisf
  */
-class Post extends Nodo {
-
+class Post {
+    private int id;
     private int userId;
     private static Post[] hijosNuevos;
     private static int idGen = 1;
@@ -22,8 +22,8 @@ class Post extends Nodo {
     Comment[] comments;
     private int noHijos = 0;
 
-    public Post(int idUsuario, String title, String body) {
-        super(idGen++);
+    public Post(int idUsuario, int id, String title, String body) {
+        this.id = id;
         this.title = title;
         this.body = body;
         this.userId = idUsuario;
@@ -31,11 +31,38 @@ class Post extends Nodo {
         this.comments = new Comment[noHijos];
     }
 
+    public Post(int idUsuario, String title, String body) {
+        this.id = idGen++;
+        this.title = title;
+        this.body = body;
+        this.userId = idUsuario;
+
+        this.comments = new Comment[noHijos];
+    }
+
+    public static Post[] destructuring(String[] atributos) {
+        int tam = 6;
+        Post[] posts = new Post[atributos.length / tam];
+        for (int i = 0; (i + 1) * tam <= atributos.length; i++) {
+            int marcador = i*tam;
+            Post post = new Post(
+                    Integer.parseInt(atributos[marcador + 1]),
+                    Integer.parseInt(atributos[marcador + 2]),
+                    atributos[marcador + 3],
+                    atributos[marcador + 4]
+            );
+            posts[i] = post;
+        }
+
+        return posts;
+    }
+
     public void addComment(Comment comment) {
         this.comments = Comment.addComment(comments, comment, noHijos);
+        System.out.println("El comentario del usuario " + comment.getEmail() + " se ha añadido correctamente en el post con id: " + this.id);
         noHijos++;
     }
-    
+
     public Comment getComentario(int id) {
         int index = Comment.buscarComentario(comments, id, noHijos);
         return comments[index];
@@ -49,7 +76,6 @@ class Post extends Nodo {
         }
 
         hijosNuevos[noHijos] = hijoNuevo;
-        System.out.println("Post añadido satisfactoriamente");
         return hijosNuevos;
     }
 
@@ -83,6 +109,15 @@ class Post extends Nodo {
 
         return index;
     }
+    
+    public static Post getPost(Post[] hijos, int id, int noHijos) {
+        int resultado = Post.buscarPost(hijos, id, noHijos);
+        if (resultado != -1) {
+             return hijos[resultado];
+        } else {
+            return null;
+        }
+    }
 
     public int getUserId() {
         return userId;
@@ -93,7 +128,7 @@ class Post extends Nodo {
     }
 
     public int getId() {
-        return super.getId();
+        return this.id;
     }
 
     public static int getIdGen() {
@@ -118,5 +153,9 @@ class Post extends Nodo {
 
     public void setBody(String body) {
         this.body = body;
+    }
+    
+    public Comment[] getComments() {
+        return this.comments;
     }
 }

@@ -18,14 +18,39 @@ public class Comment {
     private String name;
     private String email;
     private String body;
-    private Usuario user;
 
+        public Comment(int idPost, int id, String name, String email, String body) {
+        this.id = id;
+        this.postId = idPost;
+        this.name = name;
+        this.email = email;
+        this.body = body;
+    }
+    
     public Comment(int idPost, String name, String email, String body) {
         this.id = idGen++;
         this.postId = idPost;
         this.name = name;
         this.email = email;
         this.body = body;
+    }
+    
+        public static Comment[] destructuring(String[] atributos) {
+        int tam = 7;
+        Comment[] comments = new Comment[atributos.length / tam];
+        for (int i = 0; (i + 1) * tam <= atributos.length; i++) {
+            int marcador = i*tam;
+            Comment comment = new Comment(
+                    Integer.parseInt(atributos[marcador + 1]),
+                    Integer.parseInt(atributos[marcador + 2]),
+                    atributos[marcador + 3],
+                    atributos[marcador + 4],
+                    atributos[marcador + 5]
+            );
+            comments[i] = comment;
+        }
+
+        return comments;
     }
 
     public static Comment[] addComment(Comment[] hijos, Comment hijoNuevo, int noHijos) {
@@ -90,6 +115,4 @@ public class Comment {
     public String getBody() {
         return body;
     }
-    
-    
 }

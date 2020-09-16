@@ -11,8 +11,9 @@ import java.util.ArrayList;
  *
  * @author luisf
  */
-public class Usuario extends Nodo {
-
+public class Usuario {
+    
+    private int id;
     private static int idGen = 1;
     private static Usuario[] hijosNuevos;
     private String name;
@@ -27,8 +28,21 @@ public class Usuario extends Nodo {
     private Post[] posts;
     private int noHijos = 0;
 
+    public Usuario(int id, String name, String userName, String email, Adress adress, String phone, String website, Company company) {
+        this.id = id;
+        this.name = name;
+        this.userName = userName;
+        this.email = email;
+        this.phone = phone;
+        this.website = website;
+        this.adress = adress;
+        this.company = company;
+
+        this.posts = new Post[noHijos];
+    }
+
     public Usuario(String name, String userName, String email, Adress adress, String phone, String website, Company company) {
-        super(idGen++);
+        this.id = idGen++;
         this.name = name;
         this.userName = userName;
         this.email = email;
@@ -40,14 +54,48 @@ public class Usuario extends Nodo {
         this.posts = new Post[noHijos];
     }
     
+    public static Usuario[] destructuring(String[] atributos) {
+        int tam = 23;
+        Usuario[] usuarios = new Usuario[atributos.length / tam];
+        for (int i = 0; (i + 1) * 23 <= atributos.length; i++) {
+            int  marcador = i*tam;
+            Usuario usuario = new Usuario(
+                    Integer.parseInt(atributos[marcador + 1]),
+                    atributos[marcador + 2],
+                    atributos[marcador + 3],
+                    atributos[marcador + 4],
+                    new Adress(
+                            atributos[marcador + 6],
+                            atributos[marcador + 7],
+                            atributos[marcador + 8],
+                            atributos[marcador + 9],
+                            new Geo(
+                                    Double.parseDouble(atributos[marcador + 11].replaceAll("\"", "")),
+                                    Double.parseDouble(atributos[marcador + 12].replaceAll("\"", ""))
+                            )
+                    ),
+                    atributos[marcador + 15],
+                    atributos[marcador + 16],
+                    new Company(
+                            atributos[marcador + 18],
+                            atributos[marcador + 19],
+                            atributos[marcador + 20]
+                    )
+            );
+            usuarios[i] = usuario;
+        }
+
+        return usuarios;
+    }
+
     public void addPost(Post post) {
         this.posts = Post.addPost(posts, post, noHijos);
+        System.out.println("Post: " + post.getTitle() + " del usuario " + userName + " añadido satisfactoriamente");
         noHijos++;
     }
-    
+
     public Post getPost(int id) {
-        int index = Post.buscarPost(posts, id, noHijos);
-        return posts[index];
+        return Post.getPost(posts, id, noHijos);
     }
 
     public static Usuario[] addUsuario(Usuario[] usuario, Usuario usuarioNuevo, int noHijos) {
@@ -92,9 +140,13 @@ public class Usuario extends Nodo {
 
         return index;
     }
+    
+    public static Usuario getUsuario(Usuario[] hijos, int id, int noHijos) {
+        return hijos[Usuario.buscarUsuario(hijos, id, noHijos)];
+    }
 
     public int getId() {
-        return super.getId();
+        return this.id;
     }
 
     public static int getIdGen() {
@@ -151,5 +203,9 @@ public class Usuario extends Nodo {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+    
+    public Post[] getPosts() {
+        return this.posts;
     }
 }
