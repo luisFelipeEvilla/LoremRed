@@ -5,22 +5,23 @@
  */
 package loremred;
 
-import java.util.ArrayList;
+import utils.CustomList.Lista;
 
 /**
  *
  * @author luisf
  */
 class Post {
+
     private int id;
     private int userId;
-    private static Post[] hijosNuevos;
+    //private static Post[] hijosNuevos;
     private static int idGen = 1;
     private String title;
     private String body;
 
-    Comment[] comments;
-    private int noHijos = 0;
+    //Comment[] comments;
+    private Lista<Comment> comentarios;
 
     public Post(int idUsuario, int id, String title, String body) {
         this.id = id;
@@ -28,7 +29,7 @@ class Post {
         this.body = body;
         this.userId = idUsuario;
 
-        this.comments = new Comment[noHijos];
+        comentarios = new Lista();
     }
 
     public Post(int idUsuario, String title, String body) {
@@ -37,86 +38,40 @@ class Post {
         this.body = body;
         this.userId = idUsuario;
 
-        this.comments = new Comment[noHijos];
+        comentarios = new Lista();
     }
 
-    public static Post[] destructuring(String[] atributos) {
+    public static Lista<Post> destructuring(String[] atributos) {
         int tam = 6;
-        Post[] posts = new Post[atributos.length / tam];
+        //Post[] posts = new Post[atributos.length / tam];
+        Lista<Post> posts = new Lista();
         for (int i = 0; (i + 1) * tam <= atributos.length; i++) {
-            int marcador = i*tam;
+            int marcador = i * tam;
             Post post = new Post(
                     Integer.parseInt(atributos[marcador + 1]),
                     Integer.parseInt(atributos[marcador + 2]),
                     atributos[marcador + 3],
                     atributos[marcador + 4]
             );
-            posts[i] = post;
+            posts.add(post);
         }
 
         return posts;
     }
 
     public void addComment(Comment comment) {
-        this.comments = Comment.addComment(comments, comment, noHijos);
+        comentarios.add(comment);
         System.out.println("El comentario del usuario " + comment.getEmail() + " se ha añadido correctamente en el post con id: " + this.id);
-        noHijos++;
     }
 
     public Comment getComentario(int id) {
-        int index = Comment.buscarComentario(comments, id, noHijos);
-        return comments[index];
-    }
-
-    public static Post[] addPost(Post[] hijos, Post hijoNuevo, int noHijos) {
-        hijosNuevos = new Post[noHijos + 1];
-
-        for (int i = 0; i < noHijos; i++) {
-            hijosNuevos[i] = hijos[i];
-        }
-
-        hijosNuevos[noHijos] = hijoNuevo;
-        return hijosNuevos;
-    }
-
-    public static Post[] removePost(Post[] hijos, int id, int noHijos) {
-        int index = buscarPost(hijos, id, noHijos);
-        hijosNuevos = new Post[noHijos - 1];
-
-        for (int i = 0; i < noHijos - 1; i++) {
-            if (i < index) {
-                hijosNuevos[i] = hijos[i];
-            } else {
-                hijosNuevos[i] = hijos[i + 1];
+        for (int i = 0; i < comentarios.count(); i++) {
+            Comment comentario = comentarios.get(i);
+            if (comentario.getId() == id) {
+                return comentario;
             }
         }
-
-        System.out.println("usuario " + hijos[index].getTitle() + " removido satisfactoriamente");
-
-        return hijosNuevos;
-    }
-
-    public static int buscarPost(Post[] hijos, int id, int noHijos) {
-        int index = -1;
-        int aux = -1;
-        for (int i = 0; i < noHijos; i++) {
-            aux++;
-            if (hijos[i].getId() == id) {
-                index = aux;
-                return index;
-            }
-        }
-
-        return index;
-    }
-    
-    public static Post getPost(Post[] hijos, int id, int noHijos) {
-        int resultado = Post.buscarPost(hijos, id, noHijos);
-        if (resultado != -1) {
-             return hijos[resultado];
-        } else {
-            return null;
-        }
+        return null;
     }
 
     public int getUserId() {
@@ -154,8 +109,8 @@ class Post {
     public void setBody(String body) {
         this.body = body;
     }
-    
-    public Comment[] getComments() {
-        return this.comments;
+
+    public Lista<Comment> getComments() {
+        return comentarios;
     }
 }

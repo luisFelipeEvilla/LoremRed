@@ -6,16 +6,17 @@
 package loremred;
 
 import java.util.ArrayList;
+import utils.CustomList.Lista;
 
 /**
  *
  * @author luisf
  */
 public class Usuario {
-    
+
     private int id;
     private static int idGen = 1;
-    private static Usuario[] hijosNuevos;
+    //private static Usuario[] hijosNuevos;
     private String name;
     private String userName;
     private String email;
@@ -25,8 +26,7 @@ public class Usuario {
     private Company company;
     private Comment comments;
 
-    private Post[] posts;
-    private int noHijos = 0;
+    private Lista<Post> posts;
 
     public Usuario(int id, String name, String userName, String email, Adress adress, String phone, String website, Company company) {
         this.id = id;
@@ -38,7 +38,7 @@ public class Usuario {
         this.adress = adress;
         this.company = company;
 
-        this.posts = new Post[noHijos];
+        posts = new Lista();
     }
 
     public Usuario(String name, String userName, String email, Adress adress, String phone, String website, Company company) {
@@ -51,14 +51,14 @@ public class Usuario {
         this.adress = adress;
         this.company = company;
 
-        this.posts = new Post[noHijos];
+        posts = new Lista();
     }
-    
-    public static Usuario[] destructuring(String[] atributos) {
+
+    public static Lista<Usuario> destructuring(String[] atributos) {
         int tam = 23;
-        Usuario[] usuarios = new Usuario[atributos.length / tam];
+        Lista<Usuario> usuarios = new Lista();
         for (int i = 0; (i + 1) * 23 <= atributos.length; i++) {
-            int  marcador = i*tam;
+            int marcador = i * tam;
             Usuario usuario = new Usuario(
                     Integer.parseInt(atributos[marcador + 1]),
                     atributos[marcador + 2],
@@ -82,69 +82,27 @@ public class Usuario {
                             atributos[marcador + 20]
                     )
             );
-            usuarios[i] = usuario;
+            usuarios.add(usuario);
         }
 
         return usuarios;
     }
 
     public void addPost(Post post) {
-        this.posts = Post.addPost(posts, post, noHijos);
+        posts.add(post);
         System.out.println("Post: " + post.getTitle() + " del usuario " + userName + " añadido satisfactoriamente");
-        noHijos++;
     }
 
     public Post getPost(int id) {
-        return Post.getPost(posts, id, noHijos);
-    }
-
-    public static Usuario[] addUsuario(Usuario[] usuario, Usuario usuarioNuevo, int noHijos) {
-        hijosNuevos = new Usuario[noHijos + 1];
-
-        for (int i = 0; i < noHijos; i++) {
-            hijosNuevos[i] = usuario[i];
-        }
-
-        hijosNuevos[noHijos] = usuarioNuevo;
-
-        return hijosNuevos;
-    }
-
-    public static Usuario[] removeUsuario(Usuario[] usuario, int id, int noHijos) {
-        int index = buscarUsuario(usuario, id, noHijos);
-        hijosNuevos = new Usuario[noHijos - 1];
-
-        for (int i = 0; i < noHijos - 1; i++) {
-            if (i < index) {
-                hijosNuevos[i] = usuario[i];
-            } else {
-                hijosNuevos[i] = usuario[i + 1];
+        for (int i = 0; i < posts.count(); i++) {
+            Post post = posts.get(i);
+            if (post.getId() == id) {
+                return post;
             }
         }
-
-        System.out.println("usuario " + usuario[index].getName() + " removido satisfactoriamente");
-
-        return hijosNuevos;
-    }
-
-    public static int buscarUsuario(Usuario[] hijos, int id, int noHijos) {
-        int index = -1;
-        int aux = -1;
-        for (int i = 0; i < noHijos; i++) {
-            aux++;
-            if (hijos[i].getId() == id) {
-                index = aux;
-                return index;
-            }
-        }
-
-        return index;
+        return null;
     }
     
-    public static Usuario getUsuario(Usuario[] hijos, int id, int noHijos) {
-        return hijos[Usuario.buscarUsuario(hijos, id, noHijos)];
-    }
-
     public int getId() {
         return this.id;
     }
@@ -204,8 +162,8 @@ public class Usuario {
     public void setCompany(Company company) {
         this.company = company;
     }
-    
-    public Post[] getPosts() {
+
+    public Lista<Post> getPosts() {
         return this.posts;
     }
 }

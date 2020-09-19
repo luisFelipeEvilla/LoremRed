@@ -15,6 +15,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import utils.CustomList.Lista;
 import utils.Utils;
 
 /**
@@ -23,25 +24,38 @@ import utils.Utils;
  */
 public class LoremRed {
     
-    private Usuario[] users;
-    private int noHijos = 0;
+    private Lista<Usuario> usuarios;
     
 
     private static final String APIURL = "https://jsonplaceholder.typicode.com";
 
     public LoremRed() {
-        this.users = new Usuario[noHijos];
+        usuarios = new Lista();
+    }
+    public Usuario getUser(int id)
+    {
+        for (int i = 0; i < usuarios.count(); i++) {
+            Usuario usuario = usuarios.get(i);
+            if (usuario.getId() == id) {
+                return usuario;
+            }
+        }
+        return null;
     }
     
-    public void addUser(Usuario user) {
-        this.users = Usuario.addUsuario(users, user, noHijos);
-        System.out.println("usuario: " + user.getUserName() + " agregado satisfactoriamente");
-        this.noHijos++;
+    public void addUser(Usuario usuario) {
+        usuarios.add(usuario);
+        System.out.println("usuario: " + usuario.getUserName() + " agregado satisfactoriamente");
     }
     
     public void removeUser(int id) {
-        users = Usuario.removeUsuario(users, id, noHijos);
-        noHijos--;
+        for (int i = 0; i < usuarios.count(); i++) {
+            Usuario usuario = usuarios.get(i);
+            if (usuario.getId() == id) {
+                usuarios.remove(usuario);
+                return;
+            }
+        }
     }
     
     /*
@@ -54,25 +68,23 @@ public class LoremRed {
             Utils.fetchData(app.APIURL+"/posts", "C:/Users/Public/Documents/posts.txt");
             Utils.fetchData(app.APIURL+"/comments", "C:/Users/Public/Documents/comments.txt");
             
-            Usuario[] usuarios = Usuario.destructuring(Utils.JsonParser("C:/Users/Public/Documents/users.txt"));
-            for (int i = 0; i < usuarios.length; i++) {
-                app.addUser(usuarios[i]);
+            app.usuarios = Usuario.destructuring(Utils.JsonParser("C:/Users/Public/Documents/users.txt"));
+            
+            Lista<Post> posts = Post.destructuring(Utils.JsonParser("C:/Users/Public/Documents/posts.txt"));
+            
+            for (int i = 0; i < posts.count(); i++) {
+                Post post = posts.get(i);
+                System.out.println(post.getTitle());
+                app.getUser(post.getUserId()).addPost(post);
             }
             
-            Post[] posts = Post.destructuring(Utils.JsonParser("C:/Users/Public/Documents/posts.txt"));
-            
-            for (int i = 0; i < posts.length; i++) {
-                Usuario usuario = Usuario.getUsuario(app.users, posts[i].getUserId(), app.noHijos);
-                usuario.addPost(posts[i]);
-            }
-            
-            Comment[] comments = Comment.destructuring(Utils.JsonParser("C:/Users/Public/Documents/comments.txt"));
-            
-            for (int i = 0; i < comments.length; i++) {
-                for (int j = 0; j < app.users.length; j++) {
-                    Post post = app.users[j].getPost(comments[i].getPostId());
+            //Comment[] comments = Comment.destructuring(Utils.JsonParser("C:/Users/Public/Documents/comments.txt"));
+            Lista<Comment> comentarios = Comment.destructuring(Utils.JsonParser("C:/Users/Public/Documents/comments.txt"));
+            for (int i = 0; i < comentarios.count(); i++) {
+                for (int j = 0; j < app.usuarios.count(); j++) {
+                    Post post = app.usuarios.get(j).getPost(comentarios.get(i).getPostId());
                     if (post != null) {
-                        post.addComment(comments[i]);
+                        post.addComment(comentarios.get(i));
                     }
                 }
             }
@@ -80,29 +92,29 @@ public class LoremRed {
             System.out.println("");
             
             //mostrar todos los post del usuario con id: 1
-            Usuario u = Usuario.getUsuario(usuarios, 1, app.noHijos);
-            posts = u.getPosts();
+            Usuario usuario = app.getUser(1);
+            posts = usuario.getPosts();
             System.out.println("Todos los post del usuario con id: 1");
-            for (int i = 0; i < posts.length; i++) {
-                System.out.println(posts[i].getTitle());
+            for (int i = 0; i < posts.count(); i++) {
+                System.out.println(posts.get(i).getTitle());
             } 
             
             System.out.println(""); 
             //mostrar todos los comentarios del post con id: 3 del usuario con id:1
-            Post p = Post.getPost(posts, 3 , posts.length);
-            comments = p.getComments();
+            Post p = app.getUser(1).getPost(3);
+            comentarios = p.getComments();
             System.out.println("Todos los comentarios del post con id:3 del usuario con id: 1");
-            for (int i = 0; i < comments.length; i++) {
-                System.out.println(comments[i].getName());
+            for (int i = 0; i < comentarios.count(); i++) {
+                System.out.println(comentarios.get(i).getName());
             }
             
             System.out.println("");
             // mostrar todos los posts
             System.out.println("Mostrar todos los posts");
-            for (int i = 0; i < app.users.length; i++) {
-                posts = app.users[i].getPosts();
-                for (int j = 0; j < posts.length; j++) {
-                    System.out.println(posts[j].getTitle());
+            for (int i = 0; i < app.usuarios.count(); i++) {
+                posts = app.usuarios.get(i).getPosts();
+                for (int j = 0; j < posts.count(); j++) {
+                    System.out.println(posts.get(j).getTitle());
                 }
             }
             
