@@ -102,7 +102,7 @@ public class Usuario {
         }
         return null;
     }
-    
+
     public int getId() {
         return this.id;
     }

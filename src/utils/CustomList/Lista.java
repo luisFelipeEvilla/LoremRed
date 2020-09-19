@@ -44,6 +44,9 @@ public class Lista<T> {
         Nodo<T> p = sel;
         do {
             if (p.get() == dato) {
+                if (p == punt) {
+                    punt = p.getDer();
+                }
                 p.getIzq().setDer(p.getDer());
                 p.clear();
                 tam--;
