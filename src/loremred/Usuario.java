@@ -5,7 +5,6 @@
  */
 package loremred;
 
-import java.util.ArrayList;
 import utils.CustomList.Lista;
 
 /**
