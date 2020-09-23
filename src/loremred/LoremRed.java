@@ -5,6 +5,7 @@
  */
 package loremred;
 
+import Interfaz.Launcher;
 import Screens.Home;
 import Screens.Signin;
 import java.io.BufferedReader;
@@ -27,9 +28,7 @@ import utils.Utils;
  */
 public class LoremRed {
 
-    private Lista<Usuario> usuarios;
-
-    
+    public static Lista<Usuario> usuarios;
 
     public LoremRed() {
         usuarios = new Lista();
@@ -58,12 +57,12 @@ public class LoremRed {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        LoremRed app = new LoremRed();
         try {
-            app.usuarios = utils.Utils.saveData();
-
-            Home ui = new Home(app.usuarios);
-            ui.setVisible(true);
+            Launcher launcher = new Launcher();
+            launcher.setVisible(true);
+            LoremRed app = new LoremRed();
+            LoremRed.usuarios = utils.Utils.saveData();
+            launcher.animar();
         } catch (IOException ex) {
             Logger.getLogger(LoremRed.class.getName()).log(Level.SEVERE, null, ex);
         }
