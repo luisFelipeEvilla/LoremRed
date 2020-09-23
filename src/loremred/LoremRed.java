@@ -5,6 +5,7 @@
  */
 package loremred;
 
+import Interfaz.Launcher;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,6 +21,8 @@ public class LoremRed {
     public static void main(String[] args) {
 
         try {
+
+            Launcher launcher = new Launcher();
 
             App app = App.getInstancia();
             String URL = app.getURL();
@@ -46,12 +49,11 @@ public class LoremRed {
                     }
                 }
             }
-
-            System.out.println("");
+            launcher.animar();
 
         } catch (IOException ex) {
             Logger.getLogger(LoremRed.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
 
+    }
 }
