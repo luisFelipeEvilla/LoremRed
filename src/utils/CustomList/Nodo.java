@@ -5,46 +5,46 @@
  */
 package utils.CustomList;
 
+import javax.swing.JPanel;
+import loremred.Usuario;
+import utils.ArbolGrafico;
+
 /**
  *
- * @author Usuario
+ * Nodo de Lista simple enlazada
  * @param <T>
  */
 public final class Nodo<T> {
-
+    private int id;
     private T dat;
     private Nodo<T> der;
-    private Nodo<T> izq;
 
-    public Nodo(T dat) {
-        this.clear();
+    public Nodo(int id, T dat) {
         this.dat = dat;
+        this.id = id;
     }
 
     public T get() {
         return dat;
     }
-    public Nodo<T> getDer()
-    {
+
+    public Nodo<T> getDer() {
         return der;
     }
-        public Nodo<T> getIzq()
-    {
-        return izq;
-    }
+
     public void setDer(Nodo<T> nodo) {
         der = nodo;
-        nodo.izq = this;
     }
 
-    public void setIzq(Nodo<T> nodo) {
-        izq = nodo;
-        nodo.der = this;
+    public int getId() {
+        return id;
     }
-    public void clear()
-    {
-        dat = null;
-        der = null;
-        izq = null;
+
+    public T getDat() {
+        return dat;
+    }
+    
+     public JPanel getDibujo() {
+        return new ArbolGrafico((Nodo<Usuario>) (this));
     }
 }

@@ -13,7 +13,6 @@ import utils.CustomList.Lista;
  */
 public class Comment {
 
-    private int id;
     private static int idGen = 1;
     //private static Comment[] hijosNuevos;
     private int postId;
@@ -22,7 +21,7 @@ public class Comment {
     private String body;
 
     public Comment(int idPost, int id, String name, String email, String body) {
-        this.id = id;
+ 
         this.postId = idPost;
         this.name = name;
         this.email = email;
@@ -30,7 +29,6 @@ public class Comment {
     }
 
     public Comment(int idPost, String name, String email, String body) {
-        this.id = idGen++;
         this.postId = idPost;
         this.name = name;
         this.email = email;
@@ -41,17 +39,19 @@ public class Comment {
         int tam = 7;
         //Comment[] comments = new Comment[atributos.length / tam];
         Lista<Comment> comentarios = new Lista();
+        int id;
         for (int i = 0; (i + 1) * tam <= atributos.length; i++) {
             int marcador = i * tam;
-            Comment comentario = new Comment(
+            Comment comentario = new Comment(                   
                     Integer.parseInt(atributos[marcador + 1]),
-                    Integer.parseInt(atributos[marcador + 2]),
                     atributos[marcador + 3],
                     atributos[marcador + 4],
                     atributos[marcador + 5]
             );
             //comments[i] = comment;
-            comentarios.add(comentario);
+            id = Integer.parseInt(atributos[marcador + 2]);
+            comentarios.add(id, comentario);
+            idGen = id++;
         }
 
         return comentarios;
@@ -99,10 +99,6 @@ public class Comment {
 
         return index;
     }*/
-
-    public int getId() {
-        return id;
-    }
 
     public int getPostId() {
         return postId;

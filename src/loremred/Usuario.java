@@ -6,7 +6,11 @@
 package loremred;
 
 import java.util.ArrayList;
+import javax.swing.JPanel;
+import utils.ArbolGrafico;
+import utils.ArbolUsuario;
 import utils.CustomList.Lista;
+import utils.CustomList.Nodo;
 
 /**
  *
@@ -29,7 +33,6 @@ public class Usuario {
     private Lista<Post> posts;
 
     public Usuario(int id, String name, String userName, String email, Adress adress, String phone, String website, Company company) {
-        this.id = id;
         this.name = name;
         this.userName = userName;
         this.email = email;
@@ -57,10 +60,10 @@ public class Usuario {
     public static Lista<Usuario> destructuring(String[] atributos) {
         int tam = 23;
         Lista<Usuario> usuarios = new Lista();
-        for (int i = 0; (i + 1) * 23 <= atributos.length; i++) {
+        int idNuevo;
+        for (int i = 0; (i + 1) * tam <= atributos.length; i++) {
             int marcador = i * tam;
             Usuario usuario = new Usuario(
-                    Integer.parseInt(atributos[marcador + 1]),
                     atributos[marcador + 2],
                     atributos[marcador + 3],
                     atributos[marcador + 4],
@@ -82,20 +85,25 @@ public class Usuario {
                             atributos[marcador + 20]
                     )
             );
-            usuarios.add(usuario);
+            idNuevo = Integer.parseInt(atributos[marcador + 1]);
+            usuarios.add(idNuevo, usuario);
+            idGen = idNuevo++;
         }
 
         return usuarios;
     }
 
-    public void addPost(Post post) {
-        posts.add(post);
-        System.out.println("Post: " + post.getTitle() + " del usuario " + userName + " añadido satisfactoriamente");
+    public void addPost(int id, Post post) {
+        posts.add(id, post);
+    }
+    
+    public JPanel getDibujo() {
+        return new ArbolUsuario(new Nodo(this.id, this));
     }
 
-    public Post getPost(int id) {
+    public Nodo<Post> getPost(int id) {
         for (int i = 0; i < posts.count(); i++) {
-            Post post = posts.get(i);
+            Nodo<Post> post = posts.getNodo(i);
             if (post.getId() == id) {
                 return post;
             }

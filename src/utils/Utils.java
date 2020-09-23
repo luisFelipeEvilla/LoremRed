@@ -14,12 +14,19 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import loremred.Comment;
+import loremred.Post;
+import loremred.Usuario;
+import utils.CustomList.Lista;
+import utils.CustomList.Nodo;
 
 /**
  *
  * @author luisf
  */
 public class Utils {
+
+    private static final String APIURL = "https://jsonplaceholder.typicode.com";
 
     public static void fetchData(String url, String path) throws IOException {
         // realiza la  peticion a la api
@@ -49,6 +56,55 @@ public class Utils {
         }
     }
 
+    public static Lista<Usuario> saveData() throws IOException {
+
+        fetchData(APIURL + "/users", "C:/Users/Public/Documents/users.txt");
+        fetchData(APIURL + "/posts", "C:/Users/Public/Documents/posts.txt");
+        fetchData(APIURL + "/comments", "C:/Users/Public/Documents/comments.txt");
+
+        Lista<Usuario> usuarios = Usuario.destructuring(JsonParser("C:/Users/Public/Documents/users.txt"));
+        Nodo<Usuario> u;
+
+        Lista<Post> posts = Post.destructuring(Utils.JsonParser("C:/Users/Public/Documents/posts.txt"));
+        Nodo<Post> p = posts.getRaiz();
+        int userId;
+        while (p != null) {
+            userId = p.getDat().getUserId();
+            u = usuarios.getNodo(userId);
+            u.getDat().addPost(p.getId(), p.getDat());
+            p = p.getDer();
+        }
+
+        Lista<Comment> comentarios = Comment.destructuring(Utils.JsonParser("C:/Users/Public/Documents/comments.txt"));
+        Nodo<Comment> c = comentarios.getRaiz();
+        u = usuarios.getRaiz();
+        p = u.getDat().getPosts().getRaiz();
+
+        int postId;
+        boolean sw = true;
+
+        while (c != null) {
+            postId = c.getDat().getPostId();
+
+            while (u != null && sw) {
+                p = u.getDat().getPosts().getRaiz();
+
+                while (p != null && p.getId() != postId) {
+                    p = p.getDer();
+                }
+
+                if (p != null) {
+                    p.getDat().addComment(c.getId(), c.getDat());
+                }
+
+                u = u.getDer();
+            }
+            u = usuarios.getRaiz();
+            c = c.getDer();
+        }
+        return usuarios;
+    }
+
     public static String[] JsonParser(String path) {
         File inputFile = new File(path);
         StringBuffer json = new StringBuffer();
@@ -70,17 +126,14 @@ public class Utils {
             }
             reader.close();
 
-            System.out.println("");
-            System.out.println("");
-
             String[] atributos = json.toString().split("\n");
-            
+
             for (int i = 0; i < atributos.length; i++) {
                 if (atributos[i].split(":").length > 1) {
                     String valor = atributos[i].split(":")[1].trim();
-                    atributos[i] = valor.substring(0, valor.length()-1);
+                    atributos[i] = valor.substring(0, valor.length() - 1);
                 }
-               
+
             }
             return atributos;
         } catch (IOException e) {
@@ -88,20 +141,5 @@ public class Utils {
         }
 
         return null;
-    }
-
-    public static void ObjetosAAtributos(String objeto) {
-        String[] atributos;
-
-        atributos = objeto.split(",");
-        /*
-        for (int i = 0; i < atributos.length - 1; i++) {
-            atributos[i] = atributos[i].split(": ")[1];
-        }
-        
-        for (int i = 0; i < atributos.length - 1; i++) {
-            System.out.println(atributos[i]);
-        }
-         */
     }
 }

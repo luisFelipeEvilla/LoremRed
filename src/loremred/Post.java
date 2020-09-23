@@ -5,13 +5,18 @@
  */
 package loremred;
 
+import java.awt.PopupMenu;
+import javax.swing.JPanel;
+import utils.ArbolPost;
+import utils.ArbolUsuario;
 import utils.CustomList.Lista;
+import utils.CustomList.Nodo;
 
 /**
  *
  * @author luisf
  */
-class Post {
+public class Post {
 
     private int id;
     private int userId;
@@ -45,28 +50,29 @@ class Post {
         int tam = 6;
         //Post[] posts = new Post[atributos.length / tam];
         Lista<Post> posts = new Lista();
+        int id;
         for (int i = 0; (i + 1) * tam <= atributos.length; i++) {
             int marcador = i * tam;
             Post post = new Post(
                     Integer.parseInt(atributos[marcador + 1]),
-                    Integer.parseInt(atributos[marcador + 2]),
                     atributos[marcador + 3],
                     atributos[marcador + 4]
             );
-            posts.add(post);
+            id =  Integer.parseInt(atributos[marcador + 2]);
+            posts.add(id, post);
+            idGen = id++;
         }
 
         return posts;
     }
 
-    public void addComment(Comment comment) {
-        comentarios.add(comment);
-        System.out.println("El comentario del usuario " + comment.getEmail() + " se ha añadido correctamente en el post con id: " + this.id);
+    public void addComment(int id, Comment comment) {
+        comentarios.add(id, comment);
     }
 
-    public Comment getComentario(int id) {
+    public Nodo<Comment> getComentario(int id) {
         for (int i = 0; i < comentarios.count(); i++) {
-            Comment comentario = comentarios.get(i);
+            Nodo<Comment> comentario = comentarios.getNodo(i);
             if (comentario.getId() == id) {
                 return comentario;
             }
@@ -112,5 +118,9 @@ class Post {
 
     public Lista<Comment> getComments() {
         return comentarios;
+    }
+
+    public JPanel getDibujo() {
+        return new ArbolPost(new Nodo(this.id, this));
     }
 }
