@@ -22,7 +22,7 @@ import utils.CustomList.Lista;
 import utils.CustomList.Nodo;
 
 /**
- *
+ * Arbol de usuarios, con sus posts y sus comentarios
  * @author luisf
  */
 public class ArbolGrafico extends JPanel {
@@ -36,12 +36,11 @@ public class ArbolGrafico extends JPanel {
     private FontMetrics fm = null;
 
     /**
-     * Constructor de la clase ArbolExpresionGrafico. El constructor permite
+     * Constructor de la clase ArbolGrafico. El constructor permite
      * inicializar los atributos de la clase ArbolExpresionGrafico y llama al
      * método repaint(), que es el encargado de pintar el Arbol.
      *
-     * @param miExpresion: dato de tipo ArbolExpresion que contiene el Arbol a
-     * dibugetHeightjar.
+     * @param miArbol: * @param miArbol Nodo PTR de la lista de usuarios
      */
     public ArbolGrafico(Nodo<Usuario> miArbol) {
         this.usuarios = miArbol;
