@@ -136,14 +136,11 @@ public class Utils {
                         int index = 0;
                         while (atributos[i].contains("\\n")) {
                             index = atributos[i].indexOf("\\", 0);
-                            System.out.println(index);
-                            System.out.println(atributos[i]);
                             if (index + 1 < atributos[i].length()) {
                                 atributos[i] = atributos[i].substring(0, index - 1) + " \n " + atributos[i].substring(index + 2, atributos[i].length() - 1);
                             } else {
                                 atributos[i] = atributos[i].substring(0, index - 1) + " \n ";
                             }
-                            System.out.println(atributos[i]);
                         }
                     } else {
                         atributos[i] = valor.substring(0, valor.length() - 1);

@@ -6,14 +6,21 @@
 package Screens;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.HeadlessException;
 import java.awt.Rectangle;
 import javax.swing.JInternalFrame;
 import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
+import loremred.Comment;
 import loremred.Post;
 import loremred.Usuario;
+import utils.ArbolGrafico;
 import utils.CustomList.Lista;
 import utils.CustomList.Nodo;
 
@@ -25,8 +32,11 @@ public class Home extends javax.swing.JFrame {
 
     private Lista<Usuario> usuarios;
     private Nodo<Usuario> siguientes;
+    private Graphics g;
+    private JPanel dibujo;
 
-    private int index = 1;
+    private int index = 0;
+
     /**
      * Creates new form Home
      */
@@ -38,14 +48,21 @@ public class Home extends javax.swing.JFrame {
         initComponents();
         this.usuarios = usuarios;
         this.siguientes = usuarios.getRaiz();
-        this.setLocationRelativeTo(null);
+
         if (usuarios.count() >= 3) {
             index = 3;
         } else {
             index = usuarios.count();
         }
         this.setVisible(true);
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
+        this.requestFocus();
+        this.dibujo = null;
         mostrarArbol(siguientes);
+        contenedorArbol.repaint();
+        mostrarArbol(siguientes);
+
     }
 
     /**
@@ -68,10 +85,11 @@ public class Home extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        contenedorArbol = new javax.swing.JPanel();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        jDesktopPane1 = new javax.swing.JDesktopPane();
+        contenedorArbol = new javax.swing.JInternalFrame();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -125,17 +143,6 @@ public class Home extends javax.swing.JFrame {
 
         jLabel5.setText("Buscar por:");
 
-        javax.swing.GroupLayout contenedorArbolLayout = new javax.swing.GroupLayout(contenedorArbol);
-        contenedorArbol.setLayout(contenedorArbolLayout);
-        contenedorArbolLayout.setHorizontalGroup(
-            contenedorArbolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        contenedorArbolLayout.setVerticalGroup(
-            contenedorArbolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 411, Short.MAX_VALUE)
-        );
-
         jButton3.setText("Siguiente");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -152,6 +159,38 @@ public class Home extends javax.swing.JFrame {
 
         jButton5.setText("Comentario");
         jButton5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        contenedorArbol.setVisible(true);
+
+        javax.swing.GroupLayout contenedorArbolLayout = new javax.swing.GroupLayout(contenedorArbol.getContentPane());
+        contenedorArbol.getContentPane().setLayout(contenedorArbolLayout);
+        contenedorArbolLayout.setHorizontalGroup(
+            contenedorArbolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        contenedorArbolLayout.setVerticalGroup(
+            contenedorArbolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 367, Short.MAX_VALUE)
+        );
+
+        jDesktopPane1.setLayer(contenedorArbol, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
+        jDesktopPane1.setLayout(jDesktopPane1Layout);
+        jDesktopPane1Layout.setHorizontalGroup(
+            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(contenedorArbol)
+                .addContainerGap())
+        );
+        jDesktopPane1Layout.setVerticalGroup(
+            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(contenedorArbol)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -181,7 +220,7 @@ public class Home extends javax.swing.JFrame {
                 .addGap(23, 23, 23))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(contenedorArbol, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jDesktopPane1)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -189,7 +228,7 @@ public class Home extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(contenedorArbol, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jDesktopPane1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -218,7 +257,9 @@ public class Home extends javax.swing.JFrame {
             cont++;
             index++;
         }
+
         mostrarArbol(siguientes);
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -228,12 +269,14 @@ public class Home extends javax.swing.JFrame {
             p = p.getDer();
             cont++;
         }
-        
+
         index -= 3;
-        
+        siguientes = p.getDer();
+
         if (index < 1) {
             index = 1;
         }
+
         mostrarArbol(p);
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -273,19 +316,81 @@ public class Home extends javax.swing.JFrame {
     }
 
     public void mostrarArbol(Nodo<Usuario> usuarios) {
-       this.contenedorArbol.removeAll();
-       this.contenedorArbol.add(usuarios.getDibujo(), BorderLayout.CENTER);
-       this.update(this.getGraphics());
-    }
+        contenedorArbol.setTitle("arboles");
+        if (dibujo != null) {
+            contenedorArbol.remove(dibujo);
+        } 
+        dibujo = new ArbolGrafico(usuarios);
+        contenedorArbol.add(dibujo);
+        contenedorArbol.repaint();
 
+    }
+    /**
+     * public void mostrarArbol(Nodo<Usuario> usuarios) {
+     * this.contenedorArbol.removeAll();
+     * contenedorArbol.setBackground(Color.WHITE); contenedorArbol.repaint();
+     *
+     * FontMetrics fm = g.getFontMetrics(); g.setColor(Color.red); Graphics2D
+     * g2d = (Graphics2D) g;
+     *
+     * Rectangle dimensiones = new Rectangle(this.getSize().width / 2 - 75,
+     * fm.getHeight() * 2, 150, fm.getHeight() + 5); BotonNodo padre = new
+     * BotonNodo("LoremdRed", dimensiones); contenedorArbol.add(padre);
+     *
+     * int contUsuarios = 0; int contPosts = 0; int contComentarios = 0;
+     *
+     * int separacionUsuariosX = 60; int separacionpostsX = 15; int
+     * separacionComentariosX = 5;
+     *
+     * int separacionUsuariosY = fm.getHeight() * 6; int separacionPostsY =
+     * fm.getHeight() * 11; int separacionComentariosY = fm.getHeight() * 15;
+     *
+     * int alturaNodos = fm.getHeight() + 5; Nodo<Usuario> u = usuarios;
+     *
+     * while (u != null && contUsuarios < 3) { dimensiones = new
+     * Rectangle(separacionUsuariosX, separacionUsuariosY, 200, fm.getHeight() +
+     * 5); BotonNodo nodo = new BotonNodo(u, dimensiones);
+     * g2d.drawLine(contenedorArbol.getSize().width / 2, fm.getHeight() * 3 + 5,
+     * separacionUsuariosX + 100, fm.getHeight() * 6);
+     * contenedorArbol.add(nodo);
+     *
+     * Nodo<Post> p = u.getDat().getPosts().getRaiz(); while (p != null &&
+     * contPosts < 3) { dimensiones = new Rectangle(separacionpostsX,
+     * fm.getHeight() * 11, 100, fm.getHeight() + 5); nodo = new BotonNodo(p,
+     * dimensiones); g2d.drawLine(separacionUsuariosX + 100, separacionUsuariosY
+     * + fm.getHeight(), separacionpostsX + 50, separacionPostsY);
+     * nodo.setToolTipText(p.getDat().getTitle()); nodo.setVisible(true);
+     * contenedorArbol.add(nodo);
+     *
+     * Nodo<Comment> c = p.getDat().getComments().getRaiz(); while (c != null &&
+     * contComentarios < 2) { g2d.drawLine(separacionpostsX + 50, fm.getHeight()
+     * * 12 + 5, separacionComentariosX + 30, fm.getHeight() * 15); dimensiones
+     * = new Rectangle(separacionComentariosX, fm.getHeight() * 15, 55,
+     * fm.getHeight() + 5); nodo = new BotonNodo(c, dimensiones);
+     * nodo.setToolTipText("Click para ver más"); contenedorArbol.add(nodo);
+     *
+     * separacionComentariosX += 60; c = c.getDer(); contComentarios++; }
+     *
+     * if (contComentarios < 2) { separacionComentariosX += 60 * (2 -
+     * contComentarios); }
+     *
+     * contComentarios = 0; separacionpostsX += 110; p = p.getDer();
+     * contPosts++; }
+     *
+     * if (contPosts < 3) { separacionpostsX += 110 * (3 - contPosts); }
+     *
+     * separacionUsuariosX += 350; contUsuarios++; contPosts = 0; u =
+     * u.getDer(); } }
+     */
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JPanel contenedorArbol;
+    private javax.swing.JInternalFrame contenedorArbol;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -5,6 +5,8 @@
  */
 package utils.CustomList;
 
+import java.awt.Graphics;
+import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import loremred.Usuario;
 import utils.ArbolGrafico;

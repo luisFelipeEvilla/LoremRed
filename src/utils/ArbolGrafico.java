@@ -14,6 +14,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.HashMap;
 import javax.swing.JButton;
+import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import loremred.Comment;
 import loremred.Usuario;
@@ -23,6 +24,7 @@ import utils.CustomList.Nodo;
 
 /**
  * Arbol de usuarios, con sus posts y sus comentarios
+ *
  * @author luisf
  */
 public class ArbolGrafico extends JPanel {
@@ -36,9 +38,9 @@ public class ArbolGrafico extends JPanel {
     private FontMetrics fm = null;
 
     /**
-     * Constructor de la clase ArbolGrafico. El constructor permite
-     * inicializar los atributos de la clase ArbolExpresionGrafico y llama al
-     * método repaint(), que es el encargado de pintar el Arbol.
+     * Constructor de la clase ArbolGrafico. El constructor permite inicializar
+     * los atributos de la clase ArbolExpresionGrafico y llama al método
+     * repaint(), que es el encargado de pintar el Arbol.
      *
      * @param miArbol: * @param miArbol Nodo PTR de la lista de usuarios
      */
@@ -46,46 +48,41 @@ public class ArbolGrafico extends JPanel {
         this.usuarios = miArbol;
         this.setBackground(Color.WHITE);
         this.setSize(1100, 403);
-        
-
-        dirty = false;
+        this.setVisible(true);
     }
 
-    /**
-     * Sobreescribe el metodo paint y se encarga de pintar todo el árbol.
-     *
-     * @param g: Objeto de la clase Graphics.
-     */
     @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-        this.removeAll();
-        fm = g.getFontMetrics();
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        this.setBackground(Color.WHITE);
+        
+        FontMetrics fm = g.getFontMetrics();
+        g.setColor(Color.red);
         Graphics2D g2d = (Graphics2D) g;
- 
+
         Rectangle dimensiones = new Rectangle(this.getSize().width / 2 - 75, fm.getHeight() * 2, 150, fm.getHeight() + 5);
         BotonNodo padre = new BotonNodo("LoremdRed", dimensiones);
         this.add(padre);
-        
+
         int contUsuarios = 0;
         int contPosts = 0;
         int contComentarios = 0;
-        
+
         int separacionUsuariosX = 60;
         int separacionpostsX = 15;
         int separacionComentariosX = 5;
-        
+
         int separacionUsuariosY = fm.getHeight() * 6;
         int separacionPostsY = fm.getHeight() * 11;
         int separacionComentariosY = fm.getHeight() * 15;
-        
+
         int alturaNodos = fm.getHeight() + 5;
         Nodo<Usuario> u = usuarios;
 
         while (u != null && contUsuarios < 3) {
             dimensiones = new Rectangle(separacionUsuariosX, separacionUsuariosY, 200, fm.getHeight() + 5);
             BotonNodo nodo = new BotonNodo(u, dimensiones);
-            g2d.drawLine( this.getSize().width/2, fm.getHeight() * 3 + 5, separacionUsuariosX + 100, fm.getHeight() * 6);
+            g2d.drawLine(this.getSize().width / 2, fm.getHeight() * 3 + 5, separacionUsuariosX + 100, fm.getHeight() * 6);
             this.add(nodo);
 
             Nodo<Post> p = u.getDat().getPosts().getRaiz();
@@ -104,24 +101,24 @@ public class ArbolGrafico extends JPanel {
                     nodo = new BotonNodo(c, dimensiones);
                     nodo.setToolTipText("Click para ver más");
                     this.add(nodo);
-                    
+
                     separacionComentariosX += 60;
                     c = c.getDer();
                     contComentarios++;
                 }
-                
+
                 if (contComentarios < 2) {
                     separacionComentariosX += 60 * (2 - contComentarios);
                 }
-                
+
                 contComentarios = 0;
                 separacionpostsX += 110;
                 p = p.getDer();
                 contPosts++;
             }
-            
+
             if (contPosts < 3) {
-                separacionpostsX += 110 * (3-contPosts);
+                separacionpostsX += 110 * (3 - contPosts);
             }
 
             separacionUsuariosX += 350;
@@ -130,5 +127,4 @@ public class ArbolGrafico extends JPanel {
             u = u.getDer();
         }
     }
-
 }
