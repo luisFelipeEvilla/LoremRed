@@ -17,7 +17,7 @@ import java.awt.Rectangle;
 import javax.swing.JInternalFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
-import loremred.Comment;
+import loremred.Comentario;
 import loremred.Post;
 import loremred.Usuario;
 import utils.ArbolGrafico;
@@ -87,13 +87,8 @@ public class Home extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
         botonSiguiente = new javax.swing.JButton();
         botonAnterior = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
         jDesktopPane1 = new javax.swing.JDesktopPane();
         contenedorArbol = new javax.swing.JInternalFrame();
 
@@ -117,7 +112,7 @@ public class Home extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 672, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addGap(63, 63, 63)
                 .addComponent(jLabel2)
@@ -139,16 +134,6 @@ public class Home extends javax.swing.JFrame {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jTextField1.setToolTipText("Dato de busqueda");
-
-        jButton1.setText("Usuario");
-        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-
-        jButton2.setText("Post");
-        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-
-        jLabel5.setText("Buscar por:");
-
         botonSiguiente.setText("Siguiente");
         botonSiguiente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -163,9 +148,6 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
-        jButton5.setText("Comentario");
-        jButton5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-
         contenedorArbol.setVisible(true);
 
         javax.swing.GroupLayout contenedorArbolLayout = new javax.swing.GroupLayout(contenedorArbol.getContentPane());
@@ -176,7 +158,7 @@ public class Home extends javax.swing.JFrame {
         );
         contenedorArbolLayout.setVerticalGroup(
             contenedorArbolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 367, Short.MAX_VALUE)
+            .addGap(0, 360, Short.MAX_VALUE)
         );
 
         jDesktopPane1.setLayer(contenedorArbol, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -207,21 +189,7 @@ public class Home extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(botonAnterior)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 353, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel5)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton2)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton5))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(14, 14, 14)))
-                .addGap(335, 335, 335)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(botonSiguiente)
                 .addGap(23, 23, 23))
             .addGroup(layout.createSequentialGroup()
@@ -239,17 +207,9 @@ public class Home extends javax.swing.JFrame {
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(botonSiguiente)
                     .addComponent(botonAnterior))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5)
-                .addGap(11, 11, 11)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton5))
-                .addGap(22, 22, 22))
+                .addGap(76, 76, 76))
         );
 
         pack();
@@ -312,11 +272,11 @@ public class Home extends javax.swing.JFrame {
         cont = 0;
         while (q != null && cont < 3) {
             if (raizUsuario) {
-                Post nuevoHijo = new Post((Post) q, (Comment) q.getHijos());
+                Post nuevoHijo = new Post((Post) q, (Comentario) q.getHijos());
                 raiz.addHijo(nuevoHijo);
             } else {
                 if (raizPost) {
-                    Comment nuevoHijo = new Comment((Comment) q);
+                    Comentario nuevoHijo = new Comentario((Comentario) q);
                     raiz.addHijo(nuevoHijo);
                 } else {
                     Usuario nuevoHijo = new Usuario((Usuario) q, q.getHijos());
@@ -350,11 +310,11 @@ public class Home extends javax.swing.JFrame {
 
         while (q != null && cont < 3) {
             if (raizUsuario) {
-                Post nuevoHijo = new Post((Post) q, (Comment) q.getHijos());
+                Post nuevoHijo = new Post((Post) q, (Comentario) q.getHijos());
                 raiz.addHijo(nuevoHijo);
             } else {
                 if (raizPost) {
-                    Comment nuevoHijo = new Comment((Comment) q);
+                    Comentario nuevoHijo = new Comentario((Comentario) q);
                      raiz.addHijo(nuevoHijo);
                 } else {
                     Usuario nuevoHijo = new Usuario((Usuario) q, q.getHijos());
@@ -449,17 +409,12 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JButton botonSiguiente;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JInternalFrame contenedorArbol;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton5;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
