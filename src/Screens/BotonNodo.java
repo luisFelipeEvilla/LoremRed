@@ -60,5 +60,4 @@ public class BotonNodo extends JButton {
             
         }
     }
-
 }

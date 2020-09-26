@@ -72,48 +72,6 @@ public class Comment extends Nodo {
         return (Comment) comentarios;
     }
 
-    /*public static Comment[] addComment(Comment[] hijos, Comment hijoNuevo, int noHijos) {
-        hijosNuevos = new Comment[noHijos + 1];
-
-        for (int i = 0; i < noHijos; i++) {
-            hijosNuevos[i] = hijos[i];
-        }
-
-        hijosNuevos[noHijos] = hijoNuevo;
-        System.out.println("Comentario añadido satisfactoriamente");
-        return hijosNuevos;
-    }
-
-    public static Comment[] removeComment(Comment[] hijos, int id, int noHijos) {
-        int index = buscarComentario(hijos, id, noHijos);
-        hijosNuevos = new Comment[noHijos - 1];
-
-        for (int i = 0; i < noHijos - 1; i++) {
-            if (i < index) {
-                hijosNuevos[i] = hijos[i];
-            } else {
-                hijosNuevos[i] = hijos[i + 1];
-            }
-        }
-
-        System.out.println("usuario " + hijos[index].getBody() + " removido satisfactoriamente");
-
-        return hijosNuevos;
-    }*/
-
- /*public static int buscarComentario(Comment[] hijos, int id, int noHijos) {
-        int index = -1;
-        int aux = -1;
-        for (int i = 0; i < noHijos; i++) {
-            aux++;
-            if (hijos[i].getId() == id) {
-                index = aux;
-                return index;
-            }
-        }
-
-        return index;
-    }*/
     public int getPostId() {
         return postId;
     }

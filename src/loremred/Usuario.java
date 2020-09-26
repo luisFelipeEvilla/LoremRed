@@ -21,13 +21,13 @@ public class Usuario extends Nodo {
     private String name;
     private String userName;
     private String email;
-    private Adress adress;
+    private direccion adress;
     private String phone;
     private String website;
-    private Company company;
+    private Compania company;
     private Comment comments;
 
-    public Usuario(int id, String name, String userName, String email, Adress adress, String phone, String website, Company company) {
+    public Usuario(int id, String name, String userName, String email, direccion adress, String phone, String website, Compania company) {
         super(id, name);
         this.name = name;
         this.userName = userName;
@@ -39,7 +39,7 @@ public class Usuario extends Nodo {
 
     }
 
-    public Usuario(String name, String userName, String email, Adress adress, String phone, String website, Company company) {
+    public Usuario(String name, String userName, String email, direccion adress, String phone, String website, Compania company) {
         super(idGen++, name);
         this.name = name;
         this.userName = userName;
@@ -81,7 +81,7 @@ public class Usuario extends Nodo {
                     atributos[marcador + 2],
                     atributos[marcador + 3],
                     atributos[marcador + 4],
-                    new Adress(
+                    new direccion(
                             atributos[marcador + 6],
                             atributos[marcador + 7],
                             atributos[marcador + 8],
@@ -93,7 +93,7 @@ public class Usuario extends Nodo {
                     ),
                     atributos[marcador + 15],
                     atributos[marcador + 16],
-                    new Company(
+                    new Compania(
                             atributos[marcador + 18],
                             atributos[marcador + 19],
                             atributos[marcador + 20]
@@ -157,19 +157,19 @@ public class Usuario extends Nodo {
         this.website = website;
     }
 
-    public Adress getAdress() {
+    public direccion getAdress() {
         return adress;
     }
 
-    public void setAdress(Adress adress) {
+    public void setAdress(direccion adress) {
         this.adress = adress;
     }
 
-    public Company getCompany() {
+    public Compania getCompany() {
         return company;
     }
 
-    public void setCompany(Company company) {
+    public void setCompany(Compania company) {
         this.company = company;
     }
 }

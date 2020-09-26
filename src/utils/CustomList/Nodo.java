@@ -24,9 +24,16 @@ public class Nodo {
     private String info;
     private Nodo der;
     private Nodo hijos;
+    private static int idGen = 0;
 
     public Nodo(int id, String info) {
         this.id = id;
+        this.info = info;
+        hijos = null;
+    }
+    
+    public Nodo(String info) {
+        this.id = idGen++;
         this.info = info;
         hijos = null;
     }

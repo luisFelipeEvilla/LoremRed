@@ -6,6 +6,7 @@
 package utils;
 
 import Screens.BotonNodo;
+import Screens.BotonRaiz;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
@@ -69,7 +70,8 @@ public class ArbolGrafico extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
 
         Rectangle dimensiones = new Rectangle(this.getSize().width / 2 - 75, fm.getHeight() * 2, 150, fm.getHeight() + 5);
-        BotonNodo padre = new BotonNodo(raiz.getInfo(), dimensiones);
+        BotonRaiz padre = new BotonRaiz(raiz, dimensiones);
+        
         this.add(padre);
 
         int contHijos = 0;

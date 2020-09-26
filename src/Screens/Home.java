@@ -17,7 +17,7 @@ import java.awt.Rectangle;
 import javax.swing.JInternalFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
-import loremred.Comentario;
+import loremred.Comment;
 import loremred.Post;
 import loremred.Usuario;
 import utils.ArbolGrafico;
@@ -98,7 +98,7 @@ public class Home extends javax.swing.JFrame {
         jLabel1.setText("LoremRed");
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/profile-user.png"))); // NOI18N
-        jLabel2.setText("Nombre de usuario");
+        jLabel2.setText("Invitado");
         jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/post.png"))); // NOI18N
@@ -112,7 +112,7 @@ public class Home extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 672, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 722, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addGap(63, 63, 63)
                 .addComponent(jLabel2)
@@ -272,11 +272,11 @@ public class Home extends javax.swing.JFrame {
         cont = 0;
         while (q != null && cont < 3) {
             if (raizUsuario) {
-                Post nuevoHijo = new Post((Post) q, (Comentario) q.getHijos());
+                Post nuevoHijo = new Post((Post) q, (Comment) q.getHijos());
                 raiz.addHijo(nuevoHijo);
             } else {
                 if (raizPost) {
-                    Comentario nuevoHijo = new Comentario((Comentario) q);
+                    Comment nuevoHijo = new Comment((Comment) q);
                     raiz.addHijo(nuevoHijo);
                 } else {
                     Usuario nuevoHijo = new Usuario((Usuario) q, q.getHijos());
@@ -310,11 +310,11 @@ public class Home extends javax.swing.JFrame {
 
         while (q != null && cont < 3) {
             if (raizUsuario) {
-                Post nuevoHijo = new Post((Post) q, (Comentario) q.getHijos());
+                Post nuevoHijo = new Post((Post) q, (Comment) q.getHijos());
                 raiz.addHijo(nuevoHijo);
             } else {
                 if (raizPost) {
-                    Comentario nuevoHijo = new Comentario((Comentario) q);
+                    Comment nuevoHijo = new Comment((Comment) q);
                      raiz.addHijo(nuevoHijo);
                 } else {
                     Usuario nuevoHijo = new Usuario((Usuario) q, q.getHijos());
