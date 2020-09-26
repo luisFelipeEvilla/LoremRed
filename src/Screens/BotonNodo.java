@@ -31,66 +31,34 @@ public class BotonNodo extends JButton {
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
-    public BotonNodo(Nodo dat, Rectangle dimensiones) {
-        if (dat.getDat().getClass().equals(Usuario.class)) {
-            Usuario usuario = (Usuario) (dat.getDat());
-            this.setText(usuario.getName());
-            this.setBounds(dimensiones);
-            this.setVisible(true);
-            this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    public BotonNodo(Nodo nodo, Rectangle dimensiones) {
+        this.setText(nodo.getInfo());
+        this.setBounds(dimensiones);
+        this.setVisible(true);
+        this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        if (nodo.getClass().equals(Comment.class)) {
+            Comment coment = (Comment) (nodo);
+
+            StringBuffer info = new StringBuffer();
+            info.append("Email: " + coment.getEmail() + "\n");
+            info.append(coment.getBody());
 
             this.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
-                    JFrame app = new JFrame(usuario.getName());
-                    app.setSize(1100, 403);
-                    app.add(usuario.getDibujo());
-                    app.setLocationRelativeTo(null);
-                    app.setVisible(true);
-                    app.requestFocus();
+                    JOptionPane.showMessageDialog(null, info.toString(), coment.getName(), 1);
                 }
-
             });
         } else {
-            if (dat.getDat().getClass().equals(Post.class)) {
-                Post post = (Post) (dat.getDat());
-                this.setText(post.getTitle());
-                this.setBounds(dimensiones);
-                this.setVisible(true);
-                this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
-                this.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent ae) {
-                        JFrame app = new JFrame(post.getTitle());
-                        app.setSize(1100, 403);
-                        app.add(post.getDibujo());
-                        app.setVisible(true);
-                        app.setLocationRelativeTo(null);
-                        app.requestFocus();
-                    }
-                });
-            } else {
-                Comment coment = (Comment) (dat.getDat());
-                this.setText(coment.getName());
-                this.setBounds(dimensiones);
-                this.setVisible(true);
-                this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                
-                StringBuffer info = new StringBuffer();
-                info.append("Email: " + coment.getEmail() + "\n");
-                info.append(coment.getBody());
-                
-                 this.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent ae) {
-                        JOptionPane.showMessageDialog(null, info.toString() , coment.getName(), 1);
-                    }
-                });
-                
-            }
+            this.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    Home screen = new Home(nodo);
+                }
+            });
+            
         }
-
     }
 
 }

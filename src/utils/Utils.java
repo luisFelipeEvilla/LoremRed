@@ -17,7 +17,6 @@ import java.net.URL;
 import loremred.Comment;
 import loremred.Post;
 import loremred.Usuario;
-import utils.CustomList.Lista;
 import utils.CustomList.Nodo;
 
 /**
@@ -56,52 +55,72 @@ public class Utils {
         }
     }
 
-    public static Lista<Usuario> saveData() throws IOException {
+    public static Usuario saveData() throws IOException {
 
         fetchData(APIURL + "/users", "C:/Users/Public/Documents/users.txt");
         fetchData(APIURL + "/posts", "C:/Users/Public/Documents/posts.txt");
         fetchData(APIURL + "/comments", "C:/Users/Public/Documents/comments.txt");
 
-        Lista<Usuario> usuarios = Usuario.destructuring(JsonParser("C:/Users/Public/Documents/users.txt"));
-        Nodo<Usuario> u;
-
-        Lista<Post> posts = Post.destructuring(Utils.JsonParser("C:/Users/Public/Documents/posts.txt"));
-        Nodo<Post> p = posts.getRaiz();
+        Usuario usuarios = Usuario.destructuring(JsonParser("C:/Users/Public/Documents/users.txt"));
+        Nodo u = usuarios;
+        Post posts = Post.destructuring(Utils.JsonParser("C:/Users/Public/Documents/posts.txt"));
+        Post p = posts;
         int userId;
+
         while (p != null) {
-            userId = p.getDat().getUserId();
+            userId = p.getUserId();
             u = usuarios.getNodo(userId);
-            u.getDat().addPost(p.getId(), p.getDat());
-            p = p.getDer();
+
+            Post nuevoHijo = new Post(
+                    p.getUserId(),
+                    p.getId(),
+                    p.getTitle(),
+                    p.getBody()
+            );
+
+            u.addHijo(nuevoHijo);
+            p = (Post) p.getDer();
         }
 
-        Lista<Comment> comentarios = Comment.destructuring(Utils.JsonParser("C:/Users/Public/Documents/comments.txt"));
-        Nodo<Comment> c = comentarios.getRaiz();
-        u = usuarios.getRaiz();
-        p = u.getDat().getPosts().getRaiz();
+        int aux = 0;
+        int aux2 = 0;
+
+        Comment comentarios = Comment.destructuring(Utils.JsonParser("C:/Users/Public/Documents/comments.txt"));
+        Comment c = comentarios;
+
+        u = usuarios;
+        p = (Post) (u.getHijos());
 
         int postId;
         boolean sw = true;
 
         while (c != null) {
-            postId = c.getDat().getPostId();
-
-            while (u != null && sw) {
-                p = u.getDat().getPosts().getRaiz();
+            postId = c.getPostId();
+            u = usuarios;
+            while (u != null) {
+                p = (Post) u.getHijos();
 
                 while (p != null && p.getId() != postId) {
-                    p = p.getDer();
+                    p = (Post) p.getDer();
                 }
-
                 if (p != null) {
-                    p.getDat().addComment(c.getId(), c.getDat());
+                    Comment nuevoHijo = new Comment(
+                            c.getPostId(),
+                            c.getId(),
+                            c.getName(),
+                            c.getEmail(),
+                            c.getBody()
+                    );
+                    p.addHijo(nuevoHijo);
                 }
 
+               
                 u = u.getDer();
             }
-            u = usuarios.getRaiz();
-            c = c.getDer();
+
+            c = (Comment) c.getDer();
         }
+
         return usuarios;
     }
 

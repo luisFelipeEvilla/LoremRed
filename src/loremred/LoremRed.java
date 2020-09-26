@@ -7,7 +7,6 @@ package loremred;
 
 import Interfaz.Launcher;
 import Screens.Home;
-import Screens.Signin;
 import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -18,7 +17,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import utils.CustomList.Lista;
 import utils.CustomList.Nodo;
 import utils.Utils;
 
@@ -28,15 +26,15 @@ import utils.Utils;
  */
 public class LoremRed {
 
-    public static Lista<Usuario> usuarios;
+    public static Usuario usuarios;
 
     public LoremRed() {
-        usuarios = new Lista();
+        usuarios = null;
     }
 
-    public Nodo<Usuario> getUser(int id) {
-        for (int i = 0; i < usuarios.count(); i++) {
-            Nodo<Usuario> usuario = usuarios.getNodo(i);
+    public Usuario getUser(int id) {
+        for (int i = 0; i < usuarios.getSize(); i++) {
+            Usuario usuario = (Usuario) (usuarios.getNodo(i));
             if (usuario.getId() == id) {
                 return usuario;
             }
@@ -45,12 +43,12 @@ public class LoremRed {
     }
 
     public void addUser(int id, Usuario usuario) {
-        usuarios.add(id, usuario);
+        usuarios.addHijo(usuario);
         System.out.println("usuario: " + usuario.getUserName() + " agregado satisfactoriamente");
     }
 
     public void removeUser(int id) {
-        usuarios.remove(id);
+        
     }
 
     /*

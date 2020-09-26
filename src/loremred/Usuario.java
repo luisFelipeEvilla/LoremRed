@@ -8,17 +8,14 @@ package loremred;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import utils.ArbolGrafico;
-import utils.ArbolUsuario;
-import utils.CustomList.Lista;
 import utils.CustomList.Nodo;
 
 /**
  *
  * @author luisf
  */
-public class Usuario {
+public class Usuario extends Nodo {
 
-    private int id;
     private static int idGen = 1;
     //private static Usuario[] hijosNuevos;
     private String name;
@@ -30,9 +27,8 @@ public class Usuario {
     private Company company;
     private Comment comments;
 
-    private Lista<Post> posts;
-
     public Usuario(int id, String name, String userName, String email, Adress adress, String phone, String website, Company company) {
+        super(id, name);
         this.name = name;
         this.userName = userName;
         this.email = email;
@@ -41,11 +37,10 @@ public class Usuario {
         this.adress = adress;
         this.company = company;
 
-        posts = new Lista();
     }
 
     public Usuario(String name, String userName, String email, Adress adress, String phone, String website, Company company) {
-        this.id = idGen++;
+        super(idGen++, name);
         this.name = name;
         this.userName = userName;
         this.email = email;
@@ -54,16 +49,35 @@ public class Usuario {
         this.adress = adress;
         this.company = company;
 
-        posts = new Lista();
     }
 
-    public static Lista<Usuario> destructuring(String[] atributos) {
+    public Usuario(Usuario usuario, Nodo hijos) {
+        super(usuario.getId(), usuario.getInfo());
+        this.name = usuario.getName();
+        this.email = usuario.getEmail();
+        this.adress = usuario.getAdress();
+        this.phone = usuario.getPhone();
+        this.website = usuario.getWebsite();
+        this.company = usuario.getCompany();
+
+        Post q = (Post) hijos;
+
+        while (q != null) {
+            Post nuevoHijo = new Post(q, (Comment) q.getHijos());
+            this.addHijo(nuevoHijo);
+            q = (Post) q.getDer();
+        }
+    }
+
+    public static Usuario destructuring(String[] atributos) {
         int tam = 23;
-        Lista<Usuario> usuarios = new Lista();
+        Nodo usuarios = new Nodo(1, "");
         int idNuevo;
         for (int i = 0; (i + 1) * tam <= atributos.length; i++) {
             int marcador = i * tam;
+            idNuevo = Integer.parseInt(atributos[marcador + 1]);
             Usuario usuario = new Usuario(
+                    idNuevo,
                     atributos[marcador + 2],
                     atributos[marcador + 3],
                     atributos[marcador + 4],
@@ -85,34 +99,22 @@ public class Usuario {
                             atributos[marcador + 20]
                     )
             );
-            idNuevo = Integer.parseInt(atributos[marcador + 1]);
-            usuarios.add(idNuevo, usuario);
+            usuario.setDer(usuarios.getDer());
+            usuarios.setDer(usuario);
             idGen = idNuevo++;
         }
 
-        return usuarios;
+        usuarios = usuarios.getDer();
+
+        return (Usuario) usuarios;
     }
 
-    public void addPost(int id, Post post) {
-        posts.add(id, post);
-    }
-    
-    public JPanel getDibujo() {
-        return new ArbolUsuario(new Nodo(this.id, this));
+    public String getEmail() {
+        return email;
     }
 
-    public Nodo<Post> getPost(int id) {
-        for (int i = 0; i < posts.count(); i++) {
-            Nodo<Post> post = posts.getNodo(i);
-            if (post.getId() == id) {
-                return post;
-            }
-        }
-        return null;
-    }
-
-    public int getId() {
-        return this.id;
+    public Comment getComments() {
+        return comments;
     }
 
     public static int getIdGen() {
@@ -169,9 +171,5 @@ public class Usuario {
 
     public void setCompany(Company company) {
         this.company = company;
-    }
-
-    public Lista<Post> getPosts() {
-        return this.posts;
     }
 }

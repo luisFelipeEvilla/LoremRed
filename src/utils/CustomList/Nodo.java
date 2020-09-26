@@ -14,39 +14,80 @@ import utils.ArbolGrafico;
 /**
  *
  * Nodo de Lista simple enlazada
+ *
  * @param <T>
  */
-public final class Nodo<T> {
+public class Nodo {
+
     private int id;
-    private T dat;
-    private Nodo<T> der;
+    // información visible al momento de msotrar el nodo graficamente
+    private String info;
+    private Nodo der;
+    private Nodo hijos;
 
-    public Nodo(int id, T dat) {
-        this.dat = dat;
+    public Nodo(int id, String info) {
         this.id = id;
+        this.info = info;
+        hijos = null;
     }
 
-    public T get() {
-        return dat;
+    public void setHijos(Nodo hijos) {
+        this.hijos = hijos;
     }
 
-    public Nodo<T> getDer() {
-        return der;
+    public void addHijo(Nodo hijo) {
+        if (this.hijos == null) {
+            hijos = hijo;
+        } else {
+            hijo.setDer(hijos);
+            hijos = hijo;
+        }
     }
 
-    public void setDer(Nodo<T> nodo) {
-        der = nodo;
+    public Nodo getHijos() {
+        return hijos;
     }
 
     public int getId() {
         return id;
     }
 
-    public T getDat() {
-        return dat;
+    public Nodo getDer() {
+        return der;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public void setDer(Nodo der) {
+        this.der = der;
     }
     
-     public JPanel getDibujo() {
-        return new ArbolGrafico((Nodo<Usuario>) (this));
+    public int getSize() {
+        Nodo p = this;
+        int cont = 0;
+        while (p != null) {
+            cont ++;
+            p = p.getDer();
+        }
+        
+        return cont;
+    }
+    
+    public Nodo getNodo(int id) {
+        Nodo p = this;
+        while (p != null && p.getId() !=  id) {
+            p = p.getDer();
+        }
+        return p;
+    }
+
+    public String getInfo() {
+        return info;
     }
 }

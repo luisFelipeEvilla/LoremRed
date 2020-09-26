@@ -7,77 +7,76 @@ package loremred;
 
 import java.awt.PopupMenu;
 import javax.swing.JPanel;
-import utils.ArbolPost;
-import utils.ArbolUsuario;
-import utils.CustomList.Lista;
 import utils.CustomList.Nodo;
 
 /**
  *
  * @author luisf
  */
-public class Post {
+public class Post extends Nodo {
 
-    private int id;
     private int userId;
     //private static Post[] hijosNuevos;
     private static int idGen = 1;
     private String title;
     private String body;
 
-    //Comment[] comments;
-    private Lista<Comment> comentarios;
 
     public Post(int idUsuario, int id, String title, String body) {
-        this.id = id;
+        super(id, title);
         this.title = title;
         this.body = body;
         this.userId = idUsuario;
-
-        comentarios = new Lista();
     }
 
     public Post(int idUsuario, String title, String body) {
-        this.id = idGen++;
+        super(idGen++, title);
         this.title = title;
         this.body = body;
         this.userId = idUsuario;
-
-        comentarios = new Lista();
     }
 
-    public static Lista<Post> destructuring(String[] atributos) {
+    public Post(Post post, Comment hijos) {
+        super(post.getId(), post.getInfo());
+        this.userId = post.getUserId();
+        this.title = post.getTitle();
+        this.body = post.getBody();
+        
+        Comment q = hijos;
+        
+        while (q!= null) {
+            Comment nuevoHijo = new Comment (q);
+            addHijo(nuevoHijo);
+            q = (Comment) q.getDer();
+        }
+    }
+    
+    
+
+    public static Post destructuring(String[] atributos) {
         int tam = 6;
         //Post[] posts = new Post[atributos.length / tam];
-        Lista<Post> posts = new Lista();
+        Post posts = new Post(100, 100, "", "");
+        Post post;
         int id;
         for (int i = 0; (i + 1) * tam <= atributos.length; i++) {
             int marcador = i * tam;
-            Post post = new Post(
+            id = Integer.parseInt(atributos[marcador + 2]);
+            post = new Post(
                     Integer.parseInt(atributos[marcador + 1]),
+                    Integer.parseInt(atributos[marcador + 2]),
                     atributos[marcador + 3],
                     atributos[marcador + 4]
             );
-            id =  Integer.parseInt(atributos[marcador + 2]);
-            posts.add(id, post);
+            post.setDer(posts.getDer());
+            posts.setDer(post);
+           
+
             idGen = id++;
         }
-
+        
+        posts = (Post) posts.getDer();
         return posts;
-    }
-
-    public void addComment(int id, Comment comment) {
-        comentarios.add(id, comment);
-    }
-
-    public Nodo<Comment> getComentario(int id) {
-        for (int i = 0; i < comentarios.count(); i++) {
-            Nodo<Comment> comentario = comentarios.getNodo(i);
-            if (comentario.getId() == id) {
-                return comentario;
-            }
-        }
-        return null;
     }
 
     public int getUserId() {
@@ -86,10 +85,6 @@ public class Post {
 
     public void setUserId(int userId) {
         this.userId = userId;
-    }
-
-    public int getId() {
-        return this.id;
     }
 
     public static int getIdGen() {
@@ -114,13 +109,5 @@ public class Post {
 
     public void setBody(String body) {
         this.body = body;
-    }
-
-    public Lista<Comment> getComments() {
-        return comentarios;
-    }
-
-    public JPanel getDibujo() {
-        return new ArbolPost(new Nodo(this.id, this));
     }
 }

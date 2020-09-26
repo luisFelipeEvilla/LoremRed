@@ -19,7 +19,6 @@ import javax.swing.JPanel;
 import loremred.Comment;
 import loremred.Usuario;
 import loremred.Post;
-import utils.CustomList.Lista;
 import utils.CustomList.Nodo;
 
 /**
@@ -29,26 +28,35 @@ import utils.CustomList.Nodo;
  */
 public class ArbolGrafico extends JPanel {
 
-    private Nodo<Usuario> usuarios;
+    private Nodo usuarios;
     private HashMap posicionNodos = null;
     private HashMap subtreeSizes = null;
     private boolean dirty = true;
     private int parent2child = 20, child2child = 30;
     private Dimension empty = new Dimension(0, 0);
     private FontMetrics fm = null;
+    private boolean home;
+    private Nodo raiz;
 
     /**
      * Constructor de la clase ArbolGrafico. El constructor permite inicializar
      * los atributos de la clase ArbolExpresionGrafico y llama al método
      * repaint(), que es el encargado de pintar el Arbol.
      *
-     * @param miArbol: * @param miArbol Nodo PTR de la lista de usuarios
+     * @param raiz: * @param miArbol Nodo PTR de la lista de usuarios
      */
-    public ArbolGrafico(Nodo<Usuario> miArbol) {
-        this.usuarios = miArbol;
+    public ArbolGrafico(Nodo raiz) {
+        this.usuarios = raiz;
         this.setBackground(Color.WHITE);
         this.setSize(1100, 403);
         this.setVisible(true);
+        this.raiz = raiz;
+        
+        if (!raiz.getClass().equals(Usuario.class)) {
+            if (!raiz.getClass().equals(Post.class)) {
+                home = true;
+            }
+        } 
     }
 
     @Override
@@ -61,70 +69,70 @@ public class ArbolGrafico extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
 
         Rectangle dimensiones = new Rectangle(this.getSize().width / 2 - 75, fm.getHeight() * 2, 150, fm.getHeight() + 5);
-        BotonNodo padre = new BotonNodo("LoremdRed", dimensiones);
+        BotonNodo padre = new BotonNodo(raiz.getInfo(), dimensiones);
         this.add(padre);
 
-        int contUsuarios = 0;
-        int contPosts = 0;
-        int contComentarios = 0;
+        int contHijos = 0;
+        int contNietos = 0;
+        int contBisNietos = 0;
 
-        int separacionUsuariosX = 60;
-        int separacionpostsX = 15;
-        int separacionComentariosX = 5;
+        int separacionHijosX = 60;
+        int separacionNietosX = 15;
+        int separacionBisNietosX = 5;
 
-        int separacionUsuariosY = fm.getHeight() * 6;
+        int separacionHijosY = fm.getHeight() * 6;
         int separacionPostsY = fm.getHeight() * 11;
         int separacionComentariosY = fm.getHeight() * 15;
 
         int alturaNodos = fm.getHeight() + 5;
-        Nodo<Usuario> u = usuarios;
+        Nodo hijo = raiz.getHijos();
 
-        while (u != null && contUsuarios < 3) {
-            dimensiones = new Rectangle(separacionUsuariosX, separacionUsuariosY, 200, fm.getHeight() + 5);
-            BotonNodo nodo = new BotonNodo(u, dimensiones);
-            g2d.drawLine(this.getSize().width / 2, fm.getHeight() * 3 + 5, separacionUsuariosX + 100, fm.getHeight() * 6);
+        while (hijo != null && contHijos < 3) {
+            dimensiones = new Rectangle(separacionHijosX, separacionHijosY, 200, fm.getHeight() + 5);
+            BotonNodo nodo = new BotonNodo(hijo, dimensiones);
+            g2d.drawLine(this.getSize().width / 2, fm.getHeight() * 3 + 5, separacionHijosX + 100, fm.getHeight() * 6);
             this.add(nodo);
 
-            Nodo<Post> p = u.getDat().getPosts().getRaiz();
-            while (p != null && contPosts < 3) {
-                dimensiones = new Rectangle(separacionpostsX, fm.getHeight() * 11, 100, fm.getHeight() + 5);
-                nodo = new BotonNodo(p, dimensiones);
-                g2d.drawLine(separacionUsuariosX + 100, separacionUsuariosY + fm.getHeight(), separacionpostsX + 50, separacionPostsY);
-                nodo.setToolTipText(p.getDat().getTitle());
+            Nodo nieto = hijo.getHijos();
+            while (nieto != null && contNietos < 3) {
+                dimensiones = new Rectangle(separacionNietosX, fm.getHeight() * 11, 100, fm.getHeight() + 5);
+                nodo = new BotonNodo(nieto, dimensiones);
+                g2d.drawLine(separacionHijosX + 100, separacionHijosY + fm.getHeight(), separacionNietosX + 50, separacionPostsY);
+                nodo.setToolTipText(nieto.getInfo());
                 nodo.setVisible(true);
                 this.add(nodo);
 
-                Nodo<Comment> c = p.getDat().getComments().getRaiz();
-                while (c != null && contComentarios < 2) {
-                    g2d.drawLine(separacionpostsX + 50, fm.getHeight() * 12 + 5, separacionComentariosX + 30, fm.getHeight() * 15);
-                    dimensiones = new Rectangle(separacionComentariosX, fm.getHeight() * 15, 55, fm.getHeight() + 5);
-                    nodo = new BotonNodo(c, dimensiones);
+                Nodo bisNieto = nieto.getHijos();
+                while (bisNieto != null && contBisNietos < 2) {
+                    g2d.drawLine(separacionNietosX + 50, fm.getHeight() * 12 + 5, separacionBisNietosX + 30, fm.getHeight() * 15);
+                    dimensiones = new Rectangle(separacionBisNietosX, fm.getHeight() * 15, 55, fm.getHeight() + 5);
+                    nodo = new BotonNodo(bisNieto, dimensiones);
                     nodo.setToolTipText("Click para ver más");
                     this.add(nodo);
-
-                    separacionComentariosX += 60;
-                    c = c.getDer();
-                    contComentarios++;
+                    
+                    separacionBisNietosX += 60;
+                    bisNieto = bisNieto.getDer();
+                    contBisNietos++;
                 }
 
-                if (contComentarios < 2) {
-                    separacionComentariosX += 60 * (2 - contComentarios);
+                if (contBisNietos < 2) {
+                    separacionBisNietosX += 60 * (2 - contBisNietos);
                 }
 
-                contComentarios = 0;
-                separacionpostsX += 110;
-                p = p.getDer();
-                contPosts++;
+                contBisNietos = 0;
+                separacionNietosX += 110;
+                nieto = nieto.getDer();
+                contNietos++;
             }
 
-            if (contPosts < 3) {
-                separacionpostsX += 110 * (3 - contPosts);
+            if (contNietos < 3) {
+                separacionNietosX += 110 * (3 - contNietos);
             }
 
-            separacionUsuariosX += 350;
-            contUsuarios++;
-            contPosts = 0;
-            u = u.getDer();
+            separacionHijosX += 350;
+            contHijos++;
+            contNietos = 0;
+            hijo = hijo.getDer();
         }
     }
 }

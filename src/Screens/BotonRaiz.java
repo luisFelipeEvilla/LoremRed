@@ -23,8 +23,8 @@ import utils.CustomList.Nodo;
 public class BotonRaiz extends JButton {
 
     public BotonRaiz(Nodo dat, Rectangle dimensiones) {
-        if (dat.getDat().getClass().equals(Usuario.class)) {
-            Usuario usuario = (Usuario) (dat.getDat());
+        if (dat.getClass().equals(Usuario.class)) {
+            Usuario usuario = (Usuario) (dat);
             this.setText(usuario.getName());
             this.setBounds(dimensiones);
             this.setVisible(true);
@@ -43,8 +43,8 @@ public class BotonRaiz extends JButton {
 
             });
         } else {
-            if (dat.getDat().getClass().equals(Post.class)) {
-                Post post = (Post) (dat.getDat());
+            if (dat.getClass().equals(Post.class)) {
+                Post post = (Post) (dat);
                 this.setText(post.getTitle());
                 this.setBounds(dimensiones);
                 this.setVisible(true);

@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import loremred.LoremRed;
+import utils.CustomList.Nodo;
 
 /**
  *
@@ -196,8 +197,9 @@ public class PanelInicio extends javax.swing.JPanel {
     }//GEN-LAST:event_usuarioMousePressed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
-        Home ui = new Home(LoremRed.usuarios);
+        Nodo raiz = new Nodo(1, "LoremRed");
+        raiz.addHijo(LoremRed.usuarios);
+        Home ui = new Home(raiz);
         ui.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 

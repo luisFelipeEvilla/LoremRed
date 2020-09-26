@@ -21,7 +21,6 @@ import loremred.Comment;
 import loremred.Post;
 import loremred.Usuario;
 import utils.ArbolGrafico;
-import utils.CustomList.Lista;
 import utils.CustomList.Nodo;
 
 /**
@@ -30,12 +29,15 @@ import utils.CustomList.Nodo;
  */
 public class Home extends javax.swing.JFrame {
 
-    private Lista<Usuario> usuarios;
-    private Nodo<Usuario> siguientes;
+    private Nodo hijos;
+    private Nodo siguientes;
     private Graphics g;
     private JPanel dibujo;
-
+    private Nodo raiz;
     private int index = 0;
+    private Nodo nuevoHijo;
+    private boolean raizUsuario;
+    private boolean raizPost;
 
     /**
      * Creates new form Home
@@ -44,25 +46,29 @@ public class Home extends javax.swing.JFrame {
         initComponents();
     }
 
-    public Home(Lista<Usuario> usuarios) {
+    public Home(Nodo raiz) {
         initComponents();
-        this.usuarios = usuarios;
-        this.siguientes = usuarios.getRaiz();
+        this.raiz = raiz;
+        this.hijos = raiz.getHijos();
 
-        if (usuarios.count() >= 3) {
-            index = 3;
+        if (raiz.getClass().equals(Usuario.class)) {
+            raizUsuario = true;
         } else {
-            index = usuarios.count();
+            if (raiz.getClass().equals(Post.class)) {
+                raizPost = true;
+            }
         }
+
+      
+
         this.setVisible(true);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.requestFocus();
         this.dibujo = null;
-        mostrarArbol(siguientes);
-        contenedorArbol.repaint();
-        mostrarArbol(siguientes);
-
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        
+        avanzar();
     }
 
     /**
@@ -85,8 +91,8 @@ public class Home extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        botonSiguiente = new javax.swing.JButton();
+        botonAnterior = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jDesktopPane1 = new javax.swing.JDesktopPane();
         contenedorArbol = new javax.swing.JInternalFrame();
@@ -143,17 +149,17 @@ public class Home extends javax.swing.JFrame {
 
         jLabel5.setText("Buscar por:");
 
-        jButton3.setText("Siguiente");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        botonSiguiente.setText("Siguiente");
+        botonSiguiente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                botonSiguienteActionPerformed(evt);
             }
         });
 
-        jButton4.setText("Anterior");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        botonAnterior.setText("Anterior");
+        botonAnterior.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                botonAnteriorActionPerformed(evt);
             }
         });
 
@@ -200,7 +206,7 @@ public class Home extends javax.swing.JFrame {
             .addComponent(jSeparator2)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(jButton4)
+                .addComponent(botonAnterior)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 353, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -216,7 +222,7 @@ public class Home extends javax.swing.JFrame {
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(14, 14, 14)))
                 .addGap(335, 335, 335)
-                .addComponent(jButton3)
+                .addComponent(botonSiguiente)
                 .addGap(23, 23, 23))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
@@ -234,8 +240,8 @@ public class Home extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(botonSiguiente)
+                    .addComponent(botonAnterior))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5)
                 .addGap(11, 11, 11)
@@ -249,36 +255,13 @@ public class Home extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        int cont = 0;
+    private void botonSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSiguienteActionPerformed
+        avanzar();
+    }//GEN-LAST:event_botonSiguienteActionPerformed
 
-        while (siguientes.getDer() != null && cont < 3) {
-            siguientes = siguientes.getDer();
-            cont++;
-            index++;
-        }
-
-        mostrarArbol(siguientes);
-
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        int cont = 0;
-        Nodo<Usuario> p = usuarios.getRaiz();
-        while (p != null && cont < index - 3) {
-            p = p.getDer();
-            cont++;
-        }
-
-        index -= 3;
-        siguientes = p.getDer();
-
-        if (index < 1) {
-            index = 1;
-        }
-
-        mostrarArbol(p);
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void botonAnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAnteriorActionPerformed
+        retroceder();
+    }//GEN-LAST:event_botonAnteriorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -315,11 +298,90 @@ public class Home extends javax.swing.JFrame {
         });
     }
 
-    public void mostrarArbol(Nodo<Usuario> usuarios) {
+    public void retroceder() {
+        int cont = 0;
+
+        Nodo q = hijos;
+        raiz.setHijos(null);
+
+        while (q != null && cont < index - 3) {
+            q = q.getDer();
+            cont++;
+        }
+
+        cont = 0;
+        while (q != null && cont < 3) {
+            if (raizUsuario) {
+                Post nuevoHijo = new Post((Post) q, (Comment) q.getHijos());
+                raiz.addHijo(nuevoHijo);
+            } else {
+                if (raizPost) {
+                    Comment nuevoHijo = new Comment((Comment) q);
+                    raiz.addHijo(nuevoHijo);
+                } else {
+                    Usuario nuevoHijo = new Usuario((Usuario) q, q.getHijos());
+                    raiz.addHijo(nuevoHijo);
+                }
+            }
+
+            q = q.getDer();
+            index--;
+            cont++;
+        }
+
+        if (index < 3) {
+            index = 3;
+        }
+
+        mostrarArbol(raiz);
+    }
+
+    public void avanzar() {
+        raiz.setHijos(null);
+        Nodo q = hijos;
+        int cont = 0;
+
+        while (q != null && cont < index) {
+            q = q.getDer();
+            cont++;
+        }
+
+        cont = 0;
+
+        while (q != null && cont < 3) {
+            if (raizUsuario) {
+                Post nuevoHijo = new Post((Post) q, (Comment) q.getHijos());
+                raiz.addHijo(nuevoHijo);
+            } else {
+                if (raizPost) {
+                    Comment nuevoHijo = new Comment((Comment) q);
+                     raiz.addHijo(nuevoHijo);
+                } else {
+                    Usuario nuevoHijo = new Usuario((Usuario) q, q.getHijos());
+                     raiz.addHijo(nuevoHijo);
+                }
+            }
+            
+            q = q.getDer();
+            cont++;
+            index++;
+
+        }
+        
+        mostrarArbol(raiz);
+
+        if (index % 3 > 0) {
+            System.out.println(index);
+            index -= cont;
+        }
+
+    }
+
+    public void mostrarArbol(Nodo usuarios) {
         contenedorArbol.setTitle("arboles");
         if (dibujo != null) {
             contenedorArbol.remove(dibujo);
-        } 
+        }
         dibujo = new ArbolGrafico(usuarios);
         contenedorArbol.add(dibujo);
         contenedorArbol.repaint();
@@ -383,12 +445,12 @@ public class Home extends javax.swing.JFrame {
      * u.getDer(); } }
      */
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botonAnterior;
+    private javax.swing.JButton botonSiguiente;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JInternalFrame contenedorArbol;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
