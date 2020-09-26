@@ -1,0 +1,68 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 23/09/2020, 06:49:52 PM
+    Author     : Juan Camilo
+*/
+.root{
+    -fx-background-color: transparent;
+}
+.panel-transparente{
+    -fx-background-color: transparent;
+}
+.panel-oscuro{
+    -fx-background-color: #222222;
+}
+.campo-texto-oscuro{
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #666666;
+    -fx-border-color: white;
+    -fx-border-width: 0px 0px 0.7px 0px;
+}
+.casilla-verificacion-oscuro{
+    -fx-text-fill: #666666;
+}
+.casilla-verificacion-oscuro .box{
+    -fx-background-color: #444444;
+    -fx-border-color: #666666;
+    -fx-border-radius: 0px;
+}
+.casilla-verificacion-oscuro:selected .mark{
+    -fx-background-color: white;
+}
+.boton-verde{
+    -fx-background-color: #00cc66;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-border-color: #00cc66;
+    -fx-border-radius: 0px;
+}
+.boton-azul{
+    -fx-background-color: #0099cc;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-border-color: #0099cc;
+    -fx-border-radius: 0px;
+}
+.boton-transparente{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.etiqueta-oscuro{
+    -fx-text-fill: #666666;
+}
+.etiqueta-negro{
+    -fx-text-fill: #222222;
+}
+.hipervinculo-verde{
+    -fx-text-fill: #00cc66;
+    -fx-underline: true;
+}
+.hipervinculo-azul{
+    -fx-text-fill: #0099cc;
+    -fx-underline: true;
+}
