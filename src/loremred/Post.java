@@ -21,7 +21,6 @@ public class Post extends Nodo {
     private String title;
     private String body;
 
-
     public Post(int idUsuario, int id, String title, String body) {
         super(id, title);
         this.title = title;
@@ -41,18 +40,24 @@ public class Post extends Nodo {
         this.userId = post.getUserId();
         this.title = post.getTitle();
         this.body = post.getBody();
-        
+
         Comment q = hijos;
-        
-        while (q!= null) {
-            Comment nuevoHijo = new Comment (q);
+
+        while (q != null) {
+            Comment nuevoHijo = new Comment(q);
             addHijo(nuevoHijo);
             q = (Comment) q.getDer();
         }
     }
-    
-    
 
+    /**
+     * Recibe una lista de atributos en forma de string y en base a ella retorna
+     * una lista de usuarios
+     *
+     * @param atributos lista de atributos en formato string
+     * @return Lista de usuarios creados en base a la lista de atributos pasados
+     * como parametro.
+     */
     public static Post destructuring(String[] atributos) {
         int tam = 6;
         //Post[] posts = new Post[atributos.length / tam];
@@ -70,11 +75,10 @@ public class Post extends Nodo {
             );
             post.setDer(posts.getDer());
             posts.setDer(post);
-           
 
             idGen = id++;
         }
-        
+
         posts = (Post) posts.getDer();
         return posts;
     }

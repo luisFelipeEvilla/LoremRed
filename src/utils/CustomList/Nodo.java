@@ -15,7 +15,7 @@ import utils.ArbolGrafico;
  *
  * Nodo de Lista simple enlazada
  *
- * @param <T>
+ * @param
  */
 public class Nodo {
 

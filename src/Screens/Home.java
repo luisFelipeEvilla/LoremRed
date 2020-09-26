@@ -24,7 +24,7 @@ import utils.ArbolGrafico;
 import utils.CustomList.Nodo;
 
 /**
- *
+ * Vista principal de la aplicacion
  * @author luisf
  */
 public class Home extends javax.swing.JFrame {
@@ -58,9 +58,7 @@ public class Home extends javax.swing.JFrame {
                 raizPost = true;
             }
         }
-
-      
-
+        
         this.setVisible(true);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
@@ -104,6 +102,11 @@ public class Home extends javax.swing.JFrame {
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/post.png"))); // NOI18N
         jLabel3.setText("News");
         jLabel3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel3MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -223,6 +226,10 @@ public class Home extends javax.swing.JFrame {
         retroceder();
     }//GEN-LAST:event_botonAnteriorActionPerformed
 
+    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+
+    }//GEN-LAST:event_jLabel3MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -257,7 +264,10 @@ public class Home extends javax.swing.JFrame {
             }
         });
     }
-
+    
+    /**
+     * Retrocede una pagina, mosrando la vista anterior
+     */
     public void retroceder() {
         int cont = 0;
 
@@ -296,6 +306,9 @@ public class Home extends javax.swing.JFrame {
         mostrarArbol(raiz);
     }
 
+    /**
+     * Avanza una pagina mostrando la vista siguiente
+     */
     public void avanzar() {
         raiz.setHijos(null);
         Nodo q = hijos;

@@ -26,7 +26,12 @@ import utils.CustomList.Nodo;
 public class Utils {
 
     private static final String APIURL = "https://jsonplaceholder.typicode.com";
-
+    /**
+     * Realiza la peticion de información a la API y la almacena en forma de archivo
+     * @param url url de la API en internet
+     * @param path ruta en la cual se desea guardar la información
+     * @throws IOException 
+     */
     public static void fetchData(String url, String path) throws IOException {
         // realiza la  peticion a la api
         URL api = new URL(url);
@@ -54,7 +59,12 @@ public class Utils {
             System.out.println("Error al realizar la petición a la API");
         }
     }
-
+    
+    /**
+     * Lee los ficheros con la información extraida en formato json y retorna un arbol con todos los objetos
+     * @return Lista de usuarios con todos los posts y comentarios
+     * @throws IOException 
+     */
     public static Usuario saveData() throws IOException {
 
         fetchData(APIURL + "/users", "C:/Users/Public/Documents/users.txt");
@@ -123,7 +133,13 @@ public class Utils {
 
         return usuarios;
     }
-
+    
+    /**
+     * Lee el archivo json, y elimina todas los caracteres especiales como ", [], etc
+     * agrega los saltos de linea y retorna una lista con solo los valores de cada llave
+     * @param path
+     * @return Lista con los valores de cada llave
+     */
     public static String[] JsonParser(String path) {
         File inputFile = new File(path);
         StringBuffer json = new StringBuffer();

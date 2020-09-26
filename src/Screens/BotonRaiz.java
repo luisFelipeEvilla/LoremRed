@@ -19,6 +19,8 @@ import loremred.Usuario;
 import utils.CustomList.Nodo;
 
 /**
+ * Boton del nodo raiz, al presionar este se abrira un JOptionPane con la
+ * información del nodo
  *
  * @author luisf
  */
@@ -60,18 +62,20 @@ public class BotonRaiz extends JButton {
                     }
                 });
             } else {
-                StringBuffer info = new StringBuffer();
-                Post post = (Post) (nodo);
-                info.append("Usuario: " + post.getUserId()+ "\n");
-                info.append("ID: " + post.getId() + "\n");
-                info.append("Titulo: " + post.getTitle() + "\n");
-                info.append(post.getBody() + "\n");
-                this.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent ae) {
-                        JOptionPane.showMessageDialog(null, info.toString(), post.getTitle(), 1);
-                    }
-                });
+                if (nodo.getClass().equals(Post.class)) {
+                    StringBuffer info = new StringBuffer();
+                    Post post = (Post) (nodo);
+                    info.append("Usuario: " + post.getUserId() + "\n");
+                    info.append("ID: " + post.getId() + "\n");
+                    info.append("Titulo: " + post.getTitle() + "\n");
+                    info.append(post.getBody() + "\n");
+                    this.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent ae) {
+                            JOptionPane.showMessageDialog(null, info.toString(), post.getTitle(), 1);
+                        }
+                    });
+                }
             }
 
         }

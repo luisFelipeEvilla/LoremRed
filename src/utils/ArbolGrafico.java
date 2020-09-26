@@ -23,7 +23,7 @@ import loremred.Post;
 import utils.CustomList.Nodo;
 
 /**
- * Arbol de usuarios, con sus posts y sus comentarios
+ * Arbol generico, que recibe un nodo generico y dibuja todos sus hijos, nietos y hasta bisnietos
  *
  * @author luisf
  */
@@ -44,7 +44,7 @@ public class ArbolGrafico extends JPanel {
      * los atributos de la clase ArbolExpresionGrafico y llama al método
      * repaint(), que es el encargado de pintar el Arbol.
      *
-     * @param raiz: * @param miArbol Nodo PTR de la lista de usuarios
+     * @param raiz: Nodo raiz del arbol
      */
     public ArbolGrafico(Nodo raiz) {
         this.usuarios = raiz;

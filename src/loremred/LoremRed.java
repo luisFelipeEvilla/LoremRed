@@ -27,12 +27,6 @@ public class LoremRed {
         }
         return null;
     }
-
-    public void addUser(int id, Usuario usuario) {
-        usuarios.addHijo(usuario);
-        System.out.println("usuario: " + usuario.getUserName() + " agregado satisfactoriamente");
-    }
-
     public void removeUser(int id) {
         
     }

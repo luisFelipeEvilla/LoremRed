@@ -19,6 +19,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 import loremred.LoremRed;
+import utils.CustomList.Nodo;
 
 /**
  * FXML Controller class
@@ -70,7 +71,10 @@ public class LauncherController implements Initializable {
 
     @FXML
     private void botIniciarSesion(ActionEvent event) {
-        Home ui = new Home(LoremRed.usuarios);
+        Nodo raiz = new Nodo(0, "LoremRed");
+        raiz.addHijo(LoremRed.usuarios);
+        System.out.println(LoremRed.usuarios.getInfo());
+        Home ui = new Home(raiz);
         ui.setVisible(true);
     }
 

@@ -8,7 +8,7 @@ package loremred;
 import utils.CustomList.Nodo;
 
 /**
- *
+ * 
  * @author luisf
  */
 public class Comment extends Nodo {
@@ -45,7 +45,14 @@ public class Comment extends Nodo {
     }
     
     
-
+    /**
+     * Recibe una lista de atributos en forma de string y en base a ella retorna
+     * una lista de usuarios
+     *
+     * @param atributos lista de atributos en formato string
+     * @return Lista de usuarios creados en base a la lista de atributos pasados
+     * como parametro.
+     */
     public static Comment destructuring(String[] atributos) {
         int tam = 7;
         //Comment[] comments = new Comment[atributos.length / tam];

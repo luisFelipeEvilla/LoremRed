@@ -19,7 +19,7 @@ import loremred.Usuario;
 import utils.CustomList.Nodo;
 
 /**
- *
+ * Boton que representa un nodo hijo del arbol
  * @author luisf
  */
 public class BotonNodo extends JButton {

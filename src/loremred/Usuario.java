@@ -17,7 +17,6 @@ import utils.CustomList.Nodo;
 public class Usuario extends Nodo {
 
     private static int idGen = 1;
-    //private static Usuario[] hijosNuevos;
     private String name;
     private String userName;
     private String email;
@@ -69,6 +68,14 @@ public class Usuario extends Nodo {
         }
     }
 
+    /**
+     * Recibe una lista de atributos en forma de string y en base a ella retorna
+     * una lista de usuarios
+     *
+     * @param atributos lista de atributos en formato string
+     * @return Lista de usuarios creados en base a la lista de atributos pasados
+     * como parametro.
+     */
     public static Usuario destructuring(String[] atributos) {
         int tam = 23;
         Nodo usuarios = new Nodo(1, "");
